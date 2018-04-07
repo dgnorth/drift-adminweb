@@ -1,0 +1,55 @@
+
+{% macro no_entries_row(txt) %}
+    <tr><td colspan="100%"><i class="fa fa-warning"> </i> 
+    {% if txt %}
+        {{txt}}
+    {% else %}
+        No entries found
+    {% endif %}
+    </td></tr>
+{% endmacro %}
+
+{% macro link_to(endpoint, text, confirm=False, _class=None) -%}
+    {% if confirm %}
+    <a href="#"
+        data-href="{{ url_for(endpoint, **kwargs) }}" 
+        data-toggle="modal" 
+        data-target="#confirm-delete"
+        {% if _class %}
+            class="{{_class}}"
+        {% endif %}
+        >{{ text|safe }}</a>
+    {% else %}
+        <a href="{{ url_for(endpoint, **kwargs) }}"
+        {% if _class %}
+            class="{{_class}}"
+        {% endif %}
+
+        >{{ text|safe }}</a>
+    {% endif %}
+{%- endmacro %}
+
+{% macro crumb(u, t) %}
+    {% if u %}
+        <li><a href="{{u}}">{{t}}</a></li>
+    {% else %}
+        <li class="active">{{t}}</li>
+    {% endif %}
+{% endmacro %}
+
+{% macro breadcrumbslist(list) %}
+    <ul class="breadcrumb">
+    {% for l in list %}
+        {{crumb(l.0, l.1)}}
+    {% endfor %}
+    </ul>
+{% endmacro %}
+
+
+{% macro order_by_combo(items) %}
+    <select class="form-control" id="order_by" name="order_by">
+        {%for item in items%}
+        <option value="{{item}}" {%if request.args.get('order_by') == item%} Selected{%endif%}>Order by {{' '.join(item.split('_')).capitalize()}}</option>
+        {%endfor%}
+    </select>
+{% endmacro %}

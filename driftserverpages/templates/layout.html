@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drift Server Pages</title>
+    <script src="{{ url_for('static', filename='js/jquery.3.2.1.min.js') }}"></script>
+
+    <link href="{{ url_for('static', filename='css/styles.css') }}#2" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-notify.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Something">
+    <meta name="author" content="Directive Games North">
+    <meta charset="utf-8">
+    <script src="{{ url_for('static', filename='js/tether.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/packs/solid.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/fontawesome.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/bootstrap-notify.js') }}"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favico.png') }}"/>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+<style>
+.userdropdown {
+  box-shadow:none !important;
+  color:#444 !important;
+  background-color:white !important;
+  border:0px !important;
+}
+</style>
+</head>
+
+<body>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class='notifications top-left'>
+  <div class="alert alert-warning alert-fixed">
+  <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  </div>
+  {% endif %}
+{% endwith %}
+
+
+    <div class="container" style="padding-top:10px;">
+        <div class="row">
+        <div class="col col-md-6">
+            <h3 class="text">Drift Server Pages</h3>
+        </div>
+        <div class="col offset-col-md-6">
+            <span class="float-right">
+
+            <div class="dropdown show float-right">
+              <a class="btn btn-sm btn-secondary dropdown-toggle userdropdown" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{{current_user.email | gravatar}}"> {{current_user.username}}
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item disabled" href="#">{{current_user.full_name or current_user.email}}</a>
+                <a class="dropdown-item" href="{{url_for('user.settings')}}">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{url_for('user.logout')}}">Log out</a>
+              </div>
+            </div>
+
+        </div>
+    </div>
+        
+        <nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-3">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav text-md-center nav-justified w-100">
+
+{% set navigation_bar = [
+    ('dashboard.index', 'dashboard', 'Dashboard', 'fa-th'),
+    ('players.index', 'players', 'Players', 'fa-user'),
+    ('matches.index', 'matches', 'Matches', 'fa-gamepad'),
+    ('metrics.index', 'metrics', 'Metrics', 'fa-chart-area'),
+    ('cards.index', 'cards', 'Cards', 'fa-tags'),
+    ('admin.index', 'admin', 'Admin', 'fa-database')
+] -%}
+            {% for endpoint, id, caption, icon in navigation_bar %}
+              <li class="nav-item {% if id == active_page %} active{% endif
+              %}">
+                <a class="nav-link" href="{{url_for(endpoint)}}"><i class="fa {{icon}}"></i> {{ caption|e }} <span class="sr-only">(current)</span>
+                </a>
+              </li>
+            {% endfor %}
+            </ul>
+
+          </div>
+        </nav>
+
+
+      <main role="main">
+        {% block content %}{% endblock %}
+      </main>
+
+
+      <footer class="footer">
+        <p>&copy; Directive Games North 2018</p>
+      </footer>
+</div>
+
+{% block scripts %}
+{% endblock %}
+
+<script>
+$(document).ready(function() {
+    $(".notifications").delay(5000).fadeOut();
+});
+
+</script>
+
+</body>
+</html>

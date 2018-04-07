@@ -1,0 +1,11 @@
+gevent
+requests>=2.4.2
+pyopenssl>=16.2.0
+raven[flask]
+flask
+flask-wtf
+flask-login
+flask-Menu
+flask-cors
+psycopg2
+Flask-Gravatar

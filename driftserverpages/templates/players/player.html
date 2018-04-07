@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+
+{% macro write_role(role) %}
+    {%if role == 'dev'%}
+        <span class="badge badge-info">{{role}}</span>
+    {%else%}
+        <span class="label label-default">{{role}}</span>
+    {%endif%}
+{% endmacro %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
+  <li class="breadcrumb-item active">{{player.player_name}}</li>
+</ol>
+
+<h2>{{player.player_name}}</h2>
+<div class="float-right">
+<a href="{{url_for('players.player_events', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Events</a>
+<a href="{{url_for('matches.index', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Matches</a>
+<a href="{{url_for('players.player_library', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Library</a>
+<a href="{{url_for('players.player_packs', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Packs</a>
+<a href="{{url_for('players.clients', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Clients</a>
+
+<a href="{{url_for('players.player_missions', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Missions</a>
+</div>
+<br>&nbsp;
+<table class="table">
+<tr>
+    <td>Player ID</td>
+    <td>{{player.player_id}}</td>
+</tr>
+<tr>
+    <td>Player Name</td>
+    <td>{{player.player_name}}
+        <div class="float-right">
+            <a href="{{url_for('players.edit_player_name', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change name</a>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>Last Logon</td>
+    <td>{{player.logon_date | dt}}</td>
+</tr>
+<tr>
+    <td>Num Logons</td>
+    <td>{{player.num_logons}}</td>
+</tr>
+<tr>
+    <td>NPC</td>
+    <td>{{player.npc}}</td>
+</tr>
+<tr>
+    <td>Last Heartbeat</td>
+    <td>{{player.last_heartbeat | dt}}</td>
+</tr>
+<tr>
+    <td>Status</td>
+    <td>{{player.status | status}}</td>
+</tr>
+<tr>
+    <td>Create Date</td>
+    <td>{{player.create_date | dt}}</td>
+</tr>
+<tr>
+    <td style="width:1%"><nobr>Daily Mission Renewal</nobr></td>
+    <td>{{player.last_daily_mission_renewal | dt}}
+        {%if last_daily_mission_renewal:%}
+        <div class="float-right"><a href="{{url_for('players.missions_clear_renewal', player_id=player.player_id)}}" class="btn btn-xs btn-outline-outline-warning">clear</a></div>
+        {%endif%}
+</td>
+</tr>
+
+<tr>
+    <td>User ID</td>
+    <td>{{player.user_id}}</td>
+</tr>
+<tr>
+    <td>User Roles</td>
+    <td>
+    {%if roles:%}
+        {%for r in roles:%}
+            {{r.role | role}}
+        {%endfor%}
+    {%else%}
+        {{"none" | role}}
+    {%endif%}
+        <div class="float-right">
+            <a href="{{url_for('players.edit_roles', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change roles</a>
+        </div>
+
+</td>
+</tr>
+</table>
+<br>
+<table class="table">
+<tr>
+    <th><img src="{{ url_for('static', filename='img/gold.png') }}"> &nbsp;Gold</th>
+    <td>{{player.gold}}</td>
+    <td>
+        <div class="float-right">
+            <a href="{{url_for('players.edit_gold', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change</a>  <a href="{{url_for('players.give_gold', player_id=player.player_id)}}" class="btn btn-xs btn-outline-info">give</a>&nbsp;<a href="{{url_for('players.player_events', player_id=player.player_id, event_type_name='gold')}}" class="btn btn-xs btn-outline-secondary">events</a>
+        </div>
+    </td></tr>
+<tr>
+    <th><img src="{{ url_for('static', filename='img/dust.png') }}"> &nbsp;Dust</th>
+    <td>{{player.dust}}</td>
+    <td>
+        <div class="float-right">
+            <a href="{{url_for('players.edit_dust', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change</a> <a href="{{url_for('players.give_dust', player_id=player.player_id)}}" class="btn btn-xs btn-outline-info">give</a>&nbsp;
+    <a href="{{url_for('players.player_events', player_id=player.player_id, event_type_name='dust')}}" class="btn btn-xs btn-outline-secondary">events</a>
+        </div>
+    </td>
+</tr>
+</table>
+
+<h3>Player Stats</h3>
+<table class="table table-striped">
+<thead>
+    <tr><th>Statistic</th><th>Value</th><th>Changed</th></tr>
+</thead>
+<tbody>
+    {% for stat in stats %}
+        <tr><td>{{stat.stat_name}}</td><td>{{stat.stat_int}}</td><td>{{stat.modify_date | dt}}</td></tr>
+    {% endfor %}
+</tbody>
+</table>
+{%if info %}
+    <div class="infobox alert alert-info"">
+        <div><small class="text-muted">{{info.0.modify_date | dt}} by {{info.1.username}}</small></div>
+        {{info.0.notes | desc}}
+    </div>
+    <a href="{{url_for('players.edit_player_note', player_id=player.player_id)}}" class="btn btn-sm btn-primary">Edit Note</a>
+
+{%else%}
+    <a href="{{url_for('players.edit_player_note', player_id=player.player_id)}}" class="btn btn-sm btn-primary">Add Note</a>
+
+{%endif%}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

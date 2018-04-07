@@ -1,0 +1,16 @@
+[Unit]
+Description=Drift Admin Site
+After=syslog.target
+
+[Service]
+Type=notify
+EnvironmentFile=/etc/environment
+ExecStart=/usr/local/bin/uwsgi /etc/opt/drift-server-pages/config/uwsgi.ini
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGQUIT
+User=root
+NotifyAccess=all
+
+[Install]
+WantedBy=multiuser.target

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% set active_page = 'metrics' %}
+
+{%block content%}
+<h2>Drift Administration</h2>
+
+<ul>
+    <li>
+        <a href="{{url_for('user.users')}}">View Admin Users</a>
+    </li>
+    <li>
+        <a href="{{url_for('user.loginlog')}}">View Admin Logins</a>
+    </li>
+    <li>
+        <a href="{{url_for('user.actionlog')}}">View Admin Action Logs</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

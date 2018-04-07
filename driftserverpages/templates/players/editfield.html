@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
+  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
+  <li class="breadcrumb-item active">Edit Player</li>
+</ol>
+
+<h2>Change {{which}} for {{player.player_name}}</h2><br>
+<div class="container" style="padding-bottom:10px;">
+<form method="post" class="form-inline">
+    <input type="text" class="form-control" id="val" name="val" placeholder="Enter New Value" value="{{val}}">&nbsp;
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

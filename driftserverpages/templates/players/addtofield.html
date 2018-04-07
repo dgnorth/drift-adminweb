@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
+  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
+  <li class="breadcrumb-item active">Give {{which}}</li>
+</ol>
+
+<h2>Add {{which}} for {{player.player_name}} who currently has {{val}}</h2><br>
+<div class="container" style="padding-bottom:10px;">
+<form method="post" class="form-inline" action="{{url_for('players.edit_%s' % which, player_id=player.player_id)}}">
+    <input type="text" class="form-control" id="add" name="add" placeholder="How much to add?" OnChange="upd();">&nbsp;
+    <input type="hidden" id="startval" name="startval" value="{{val}}">
+    <input type="hidden" id="val" name="val" value="{{val}}">
+  <button type="submit" class="btn btn-info">Give {{which}}</button>
+</form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function upd() {
+    var v = parseInt($("#add").val()) + parseInt($("#startval").val());
+    $("#val").val(v);
+}
+</script>
+{% endblock %}

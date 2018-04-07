@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% set active_page = 'metrics' %}
+
+{%block content%}
+<h2><i class="fa fa-chart-area"></i> Metrics</h2>
+
+    <form method="get" class="form-inline">
+    <select id="counter" name="counter_id" class="combo">
+        {%for counter in counters%}
+            <option value="{{counter.counter_id}}"{%if request.args.counter_id and counter.counter_id  == request.args.counter_id|int%} Selected{%endif%}>{{counter.title or counter.name}} ({{counter.period}})</option>
+        {%endfor%}
+    </select> &nbsp;
+    <select id="num_days" name="num_days" class="combo">
+        {%for num_days, title in [(0, 'default'), (3, '2 days'), (8, '1 week'), (15, '2 weeks'), (32, '1 month'), (64, '2 months'), (366, '1 year')]%}
+            <option value="{{num_days}}"{%if request.args.num_days and num_days == request.args.num_days|int%} Selected{%endif%}>{{title}}</option>
+        {%endfor%}
+    </select>
+  &nbsp;<button type="submit" class="btn btn-info btn-sm">Fetch Graph</button>
+    </form>
+
+
+{% for s in series %}
+
+<div id="container_{{s.name}}" style="width:100%; height:300px;max-width:1200px;margin:auto"></div>
+
+<script>
+$(function () {
+    $('#container_{{s.name}}').highcharts({
+        chart: {
+            type: 'area',
+            zoomType: 'x'
+        },
+        title: {
+            text: '{{s.title}}'
+        },
+        xAxis: {
+            type: 'datetime'
+
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                marker: {
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 2
+                    }
+                }
+            }
+        },
+        series: [
+            {
+                name: '{{s.title}}',
+                data: [
+                {% for r in s.rows %}
+                    [ Date.UTC({{r.0.0}},{{r.0.1}},{{r.0.2}},{{r.0.3}},{{r.0.4}}), {{r.1}} ],
+                {%- endfor -%}
+                ]
+            },
+        ],
+    });
+});
+</script>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

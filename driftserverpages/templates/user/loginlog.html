@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+
+
+{%block content%}
+
+<h2>Admin Login log</h2>
+
+<br>
+
+<ul class="pagination justify-content-end pagination-sm"></ul>
+<table class="table table-striped table-sm">
+<thead>
+    <tr><th>ID</th><th>User</th><th>Date/Time</th><th>IP Address</th></tr>
+</thead>
+<tbody>
+{%for r in rows%}
+    <tr>
+        <td>{{r.0.id}}</td>
+        <td><a href="{{url_for('user.user', user_id=r.0.user_id)}}">{{r.1.username}}</a></td>
+        <td>{{r.0.create_date | dt}}</td>
+        <td>{{r.0.ip_address}}</td>
+    </tr>
+{%endfor%}
+</tbody>
+</table>
+<ul class="pagination justify-content-end pagination-sm"></ul>
+{% endblock %}
+
+{% block scripts %}
+<script>
+pagination({{curr_page}}, {{num_pages}})
+</script>
+{% endblock %}

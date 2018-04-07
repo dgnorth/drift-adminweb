@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{%block content%}
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
+  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
+  <li class="breadcrumb-item active">Player Roles</li>
+</ol>
+
+<h2>Edit Player Roles for {{player.player_name}}</h2><br>
+<div class="col-md-6 col-md-offset-4">
+<form action="" method="post">
+
+    {%for role in player_roles%}
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="1" name="{{role.0}}" id="{{role.0}}" {%if role.0 in roles%}Checked{%endif%}>
+      <label class="form-check-label" for="{{role.0}}">
+        {{role.1}} &middot; <small>{{role.2}}</small>
+      </label>
+    </div>
+    {%endfor%}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Submit Changes
+        </button>
+    </div>
+</form>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

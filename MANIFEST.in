@@ -1,0 +1,14 @@
+recursive-include lib *
+recursive-include scripts *
+recursive-include config *
+recursive-include aws *
+recursive-include */schemas *
+recursive-include */static *
+recursive-include */templates *
+recursive-include templates *
+recursive-include static *
+
+include setup.py
+include VERSION
+include Pipfile
+include Pipfile.lock

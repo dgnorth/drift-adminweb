@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% set active_page = 'dashboard' %}
+
+{%block content%}
+<style>
+.card {
+    box-shadow: 2px 2px 4px #666666;
+    margin: 10px !important;
+}
+.diff {
+    color:crimson;
+    font-size:50%;
+    font-weight:bold;
+    display:inline;
+    vertical-align:middle;
+}
+.diffbad {
+    color:crimson;
+}
+.diffgood {
+    color:green;
+}
+</style>
+<h2>Drift Dashboard</h2>
+<div class="container">
+    <div class="row">
+    {%for stats in glance_stats%}
+    <div class="col-sm-3">
+        <div class="card">
+          <div class="card-block" style="padding:0px 5px 0px 5px;">
+            <small class="card-title"><i class="fa {{stats.icon}}"></i> {{stats.title}}</small>
+            <h3>{{stats.value | fmt_count}}
+                {%if stats.diff%}
+                <div class="diff {%if stats.diff > 0%}diffgood{%else%}diffbad{%endif%}"><i class="fa fa-caret-{%if stats.diff > 0%}up{%else%}down{%endif%}" style="margin-right:2px;"></i>{{stats.diff | abs}}%</div>
+                {%endif%}
+            </h3>
+          </div>
+        </div>
+    </div>
+    {%endfor%}
+    </div>
+</div>
+
+{% for s in series %}
+
+<div id="container_{{s.name}}" style="width:100%; height:300px;max-width:1200px;margin:auto"></div>
+
+<script>
+$(function () {
+    $('#container_{{s.name}}').highcharts({
+        chart: {
+            type: 'area',
+            zoomType: 'x'
+        },
+        title: {
+            text: '{{s.title}}'
+        },
+        xAxis: {
+            type: 'datetime'
+
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        legend: {
+            enabled: {% if s.series|length > 1%}true{% else %}false{% endif %}
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                marker: {
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 2
+                    }
+                }
+            }
+        },
+        series: [
+        {% for ss in s.series %}
+        {
+            name: '{{ss.title}}',
+            data: [
+            {%- for r in ss.rows -%}
+            [ Date.UTC({{r.0.0}},{{r.0.1}},{{r.0.2}},{{r.0.3}},{{r.0.4}}), {{r.1}} ],
+            {% endfor -%}
+            ]
+        },
+        {% endfor %}
+        ],
+    });
+});
+</script>
+
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

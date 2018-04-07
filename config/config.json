@@ -1,0 +1,55 @@
+{
+  "name": "drift-server-pages",
+  "PORT": 10080,
+  "disable_jwt": true,
+  "show_exceptions": true,
+  "apps": [
+    "driftserverpages.home",
+    "driftserverpages.outside",
+    "driftserverpages.user",
+    "driftserverpages.dashboard",
+    "driftserverpages.players",
+    "driftserverpages.metrics",
+    "driftserverpages.config_pages",
+    "driftserverpages.admin",
+    "drift.core.apps.schemas",
+    "drift.contrib.apps.servicestatus"
+  ],
+  "resources": [
+    "drift.core.resources.postgres",
+    "drift.core.resources.redis",
+    "drift.core.resources.apitarget",
+    "drift.core.resources.jwtsession"
+  ],
+  "resource_attributes": {
+    "drift.core.resources.apitarget": {
+      "api": "admin",
+      "requires_api_key": false
+    },
+    "drift.core.resources.postgres": {
+      "models": [
+        "driftserverpages.db.models"
+      ]
+    }
+  },
+  "models": [
+    "driftserverpages.db.models"
+  ],
+  "extensions": [
+    "driftserverpages.extensions.sentry",
+    "driftserverpages.extensions.web"
+  ],
+  "#SENTRY_DSN": "https://ac8e28ce76b241b3845f9e98586671fc:b9ad1248f96f4c1598a2311e0b4bd871@sentry.io/186917",
+  "TEMPLATES_AUTO_RELOAD": true,
+  "SECRET_KEY": "ODg2Njc3OCwiaWF0IjoxNDOD4G",
+  "admin_roles": [
+    ["admin", "Admin", "Can do admin things"],
+    ["useradmin", "User Admin", "Can add and change admin users"],
+    ["roleadmin", "Role Admin", "Can change roles of admin users"],
+    ["cs", "Customer Support", "Can edit players"]
+  ],
+  "player_roles": [
+    ["dev", "Developer", "Has access to developer tools in-game"],
+    ["tester", "Tester", "Can cheat in-game"]
+  ]
+}

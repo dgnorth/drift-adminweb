@@ -1,0 +1,32 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+drift = {git = "https://github.com/dgnorth/drift.git", ref = "develop"}
+driftconfig = {git = "https://github.com/dgnorth/drift-config.git", ref = "develop"}
+driftbase = {git = "https://github.com/dgnorth/drift-base.git", ref = "develop"}
+gevent = "*"
+requests = ">=2.4.2"
+pyopenssl = ">=16.2.0"
+raven = {extras = ["flask"]}
+flask = "*"
+flask-wtf = "*"
+flask-login = "*"
+flask-Menu = "*"
+flask-cors = "*"
+psycopg2 = "*"
+flask_gravatar = "*"
+
+
+[dev-packages]
+pytest = "*"
+responses = "*"
+mock = "*"
+
+[requires]
+
+python_version = "2.7"

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drift Server Pages</title>
+
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-notify.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Something">
+    <meta name="author" content="1939 Games">
+    <meta charset="utf-8">
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.3.2.1.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/packs/solid.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/fontawesome.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/bootstrap-notify.js') }}"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favico.png') }}"/>
+
+</head>
+
+<body>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-warning alert-fixed">
+  <ul class=flashes>
+      <li>{{ message }}</li>
+    </ul>
+  </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+    <div class="container" style="padding-top:10px;">
+      <header class="masthead">
+        <h3 class="text">Drift Server Pages</h3>
+        <nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-3">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav text-md-center nav-justified w-100">
+              <li class="nav-item active">
+                &nbsp;
+              </li>
+
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+
+      <main role="main">
+        {% block body %}{% endblock %}
+      </main>
+
+
+      <footer class="footer">
+        <p>&copy; Directive Games North 2018</p>
+      </footer>
+</div>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

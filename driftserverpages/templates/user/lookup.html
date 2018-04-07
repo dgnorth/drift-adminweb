@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+
+{% macro write_role(role) %}
+    <span class="badge badge-primary">{{role}}</span>
+{% endmacro %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('user.users')}}">Admin Users</a></li>
+  <li class="breadcrumb-item active">{{user.username}}</li>
+</ol>
+
+<h2>
+    <span><img src="{{user.email | gravatar(64)}}"></span> &nbsp;{{user.username}}
+</h2>
+<div class="float-right">
+<a href="{{url_for('user.loginlog', user_id=user.user_id)}}" class="btn btn-sm btn-outline-secondary">View Logins</a>
+<a href="{{url_for('user.actionlog', user_id=user.user_id)}}" class="btn btn-sm btn-outline-secondary">View Actions</a>
+</div>
+<br>&nbsp;
+<table class="table">
+<tr>
+    <td class="key" style="width:140px">User ID</td>
+    <td>{{user.user_id}}</td>
+</tr>
+<tr>
+    <td class="key">User Name</td>
+    <td>{{user.username}}</td>
+</tr>
+<tr>
+    <td class="key">Full Name</td>
+    <td>{{user.username}}</td>
+</tr>
+<tr>
+    <td class="key">Email Address</td>
+    <td>{{user.email}}</td>
+</tr>
+<tr>
+    <td class="key">Last Logon</td>
+    <td>{{user.login_date | dt}}</td>
+</tr>
+<tr>
+    <td class="key">Num Logons</td>
+    <td>{{user.num_logins}}</td>
+</tr>
+<tr>
+    <td class="key">Status</td>
+    <td>{{user.status | status}}</td>
+</tr>
+<tr>
+    <td class="key">Create Date</td>
+    <td>{{user.create_date | dt}}</td>
+</tr>
+
+<tr>
+    <td class="key">Admin Roles</td>
+    <td>{%for r in user.roles:%}
+        {{r.role | role}}
+    {%endfor%}</td>
+</tr>
+</table>
+<div>
+<a href="{{url_for('user.edit', user_id=user.user_id)}}" class="btn btn-sm btn-outline-secondary">Edit User</a>
+<a href="{{url_for('user.editroles', user_id=user.user_id)}}" class="btn btn-sm btn-outline-secondary">Edit Roles</a>
+<a href="{{url_for('user.resetpassword', user_id=user.user_id)}}" class="btn btn-sm btn-outline-danger">Reset Password</a>
+{%if user.status == 'active'%}
+    <a href="{{url_for('user.disable', user_id=user.user_id)}}" class="btn btn-sm btn-outline-danger">Disable Account</a>
+{%elif user.status == 'disabled'%}
+    <a href="{{url_for('user.enable', user_id=user.user_id)}}" class="btn btn-sm btn-outline-success">Enable Account</a>
+{%endif%}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
