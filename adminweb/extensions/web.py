@@ -9,12 +9,12 @@ from flask_login import LoginManager, current_user
 from flask_cors import CORS
 from flask_gravatar import Gravatar
 
-from driftserverpages.utils import InvalidUsage
-from driftserverpages.db.models import User
+from adminweb.utils import InvalidUsage
+from adminweb.db.models import User
 import logging
 import traceback
 
-from driftserverpages.utils import filters
+from adminweb.utils import filters
 
 log = logging.getLogger(__name__)
 
@@ -41,9 +41,9 @@ def register_extension(app):
             raise
     cors = CORS(app)
 
-    app.instance_path = pkg_resources.resource_filename('driftserverpages', '')
-    app.static_folder = pkg_resources.resource_filename('driftserverpages', 'static')
-    app.template_folder = pkg_resources.resource_filename('driftserverpages', 'templates')
+    app.instance_path = pkg_resources.resource_filename('adminweb', '')
+    app.static_folder = pkg_resources.resource_filename('adminweb', 'static')
+    app.template_folder = pkg_resources.resource_filename('adminweb', 'templates')
 
     print "app.static_folder ", app.static_folder 
     login_manager = LoginManager()

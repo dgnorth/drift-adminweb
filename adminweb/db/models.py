@@ -24,7 +24,7 @@ class User(ModelBase):
 
     roles = relationship('WebUserRole', backref=backref('dsp_users', uselist=True))
 
-    def __init__(self, username, password, full_name, email):
+    def __init__(self, username, password, full_name="", email=""):
         self.username = username
         self.email = email
         self.full_name = full_name

@@ -10,7 +10,7 @@ from wtforms import fields
 from wtforms.validators import Email, InputRequired, ValidationError
 
 from wtforms.validators import DataRequired, Length
-from driftserverpages.db.models import User
+from adminweb.db.models import User
 
 from flask_login import login_user, logout_user, current_user, login_required
 

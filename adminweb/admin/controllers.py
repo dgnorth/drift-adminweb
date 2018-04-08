@@ -9,13 +9,13 @@ from drift.utils import request_wants_json
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 
-from driftserverpages.utils import sqlalchemy_tenant_session
+from adminweb.utils import sqlalchemy_tenant_session
 
 log = logging.getLogger(__name__)
-bp = Blueprint('config', __name__, url_prefix='/config', template_folder="config")
+bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder="admin")
 
 
 @bp.route('/')
 @login_required
 def index():
-    return render_template('config/index.html')
+    return render_template('admin/index.html')

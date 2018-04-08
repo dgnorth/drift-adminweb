@@ -11,10 +11,10 @@ from driftconfig.util import get_default_drift_config
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.core.resources.postgres import format_connection_string
 from drift.orm import get_sqlalchemy_session
-from driftserverpages.utils.metrics import get_metrics_session
+from adminweb.utils.metrics import get_metrics_session
 
-from driftserverpages.utils import sqlalchemy_tenant_session
-from driftserverpages.utils.metrics import metrics_agent
+from adminweb.utils import sqlalchemy_tenant_session
+from adminweb.utils.metrics import metrics_agent
 
 log = logging.getLogger(__name__)
 bp = Blueprint('metrics', __name__, url_prefix='/metrics', template_folder="metrics")

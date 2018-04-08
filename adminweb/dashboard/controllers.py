@@ -12,8 +12,8 @@ from flask_wtf import Form
 from wtforms import PasswordField
 import wtforms.validators
 from wtforms.validators import DataRequired
-from driftserverpages.db.models import User
-from driftserverpages.utils import sqlalchemy_tenant_session
+from adminweb.db.models import User
+from adminweb.utils import sqlalchemy_tenant_session
 from drift.core.resources.postgres import format_connection_string
 from drift.orm import sqlalchemy_session
 import logging
@@ -23,7 +23,7 @@ import datetime, time
 from driftconfig.util import get_default_drift_config
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
-from driftserverpages.utils.metrics import metrics_agent
+from adminweb.utils.metrics import metrics_agent
 
 
 from drift.orm import get_sqlalchemy_session

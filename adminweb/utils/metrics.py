@@ -11,7 +11,10 @@ from drift.orm import get_sqlalchemy_session
 
 def get_metrics_session():
     tenant = tenant_from_hostname
-    metrics_server = current_app.config['METRICS_SERVER']
+    try:
+        metrics_server = current_app.config['METRICS_SERVER']
+    except KeyError:
+        return None
     if not metrics_server.get('server'):
         ts = get_default_drift_config()
         tenant_deployable_config = ts.get_table('tenants').get({'tier_name': get_tier_name().upper(), 'tenant_name': tenant, 'deployable_name': 'drift-base'})
@@ -28,16 +31,21 @@ def metrics_agent():
         yield agent
         agent.session.commit()
     except BaseException:
-        agent.session.rollback()
+        if agent.session:
+            agent.session.rollback()
         raise
     finally:
-        agent.session.close()
+        if agent.session:
+            agent.session.close()
 
 
 def collect_counters(session):
+    ret = {}
+    if not session:
+        return ret
+
     sql = "SELECT counter_id, name, period, description FROM counters"
     rows = session.execute(sql)
-    ret = {}
     for r in rows:
         ret[(r.name, r.period)] = r
         ret[r.counter_id] = r
@@ -52,7 +60,7 @@ class MetricsAgent(object):
 
     def get_counter_data(self, key, num_days, title=None):
         ret = {'title': title, 'rows': []}
-        if key not in self.counters:
+        if key not in self.counters or not self.session:
             return ret
 
         counter = self.counters[key]

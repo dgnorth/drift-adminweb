@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/dgnorth/drift-server-pages.svg?branch=develop)](https://travis-ci.com/dgnorth/drift-server-pages)
-[![codecov](https://codecov.io/gh/dgnorth/drift-server-pages/branch/develop/graph/badge.svg)](https://codecov.io/gh/dgnorth/drift-server-pages)
+[![Build Status](https://travis-ci.org/dgnorth/drift-adminweb.svg?branch=develop)](https://travis-ci.com/dgnorth/drift-adminweb)
+[![codecov](https://codecov.io/gh/dgnorth/drift-adminweb/branch/develop/graph/badge.svg)](https://codecov.io/gh/dgnorth/drift-adminweb)
 
-# drift-server-pages
+# drift-adminweb
 Administration portal for drift-base
 
 

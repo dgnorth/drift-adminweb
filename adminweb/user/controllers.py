@@ -8,9 +8,9 @@ from flask_wtf import Form
 from wtforms import fields
 from wtforms.validators import Email, InputRequired, ValidationError, Length
 
-from driftserverpages.db.models import User, LogUserLogin, LogAction, WebUserRole
+from adminweb.db.models import User, LogUserLogin, LogAction, WebUserRole
 from flask_login import login_user, logout_user
-from driftserverpages.utils import log_action, role_required
+from adminweb.utils import log_action, role_required
 
 import datetime, random, string
 

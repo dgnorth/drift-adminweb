@@ -1,17 +1,17 @@
 {
-  "name": "drift-server-pages",
+  "name": "drift-adminweb",
   "PORT": 10080,
   "disable_jwt": true,
   "show_exceptions": true,
   "apps": [
-    "driftserverpages.home",
-    "driftserverpages.outside",
-    "driftserverpages.user",
-    "driftserverpages.dashboard",
-    "driftserverpages.players",
-    "driftserverpages.metrics",
-    "driftserverpages.config_pages",
-    "driftserverpages.admin",
+    "adminweb.home",
+    "adminweb.outside",
+    "adminweb.user",
+    "adminweb.dashboard",
+    "adminweb.players",
+    "adminweb.metrics",
+    "adminweb.config_pages",
+    "adminweb.admin",
     "drift.core.apps.schemas",
     "drift.contrib.apps.servicestatus"
   ],
@@ -28,16 +28,16 @@
     },
     "drift.core.resources.postgres": {
       "models": [
-        "driftserverpages.db.models"
+        "adminweb.db.models"
       ]
     }
   },
   "models": [
-    "driftserverpages.db.models"
+    "adminweb.db.models"
   ],
   "extensions": [
-    "driftserverpages.extensions.sentry",
-    "driftserverpages.extensions.web"
+    "adminweb.extensions.sentry",
+    "adminweb.extensions.web"
   ],
   "#SENTRY_DSN": "https://ac8e28ce76b241b3845f9e98586671fc:b9ad1248f96f4c1598a2311e0b4bd871@sentry.io/186917",
   "TEMPLATES_AUTO_RELOAD": true,

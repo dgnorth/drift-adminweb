@@ -62,7 +62,7 @@ def get_engines():
     engines = {}
     tenants = []
     ts = get_ts()
-    tenants_table = ts.get_table('tenants').find({'deployable_name': 'drift-server-pages'}) #!
+    tenants_table = ts.get_table('tenants').find({'deployable_name': 'drift-adminweb'}) #!
     pick_tenant = None
     if sys.argv[1] == '-x':
         pick_tenant = sys.argv[2]

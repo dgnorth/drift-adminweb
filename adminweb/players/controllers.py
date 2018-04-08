@@ -11,9 +11,9 @@ import logging
 from drift.utils import request_wants_json
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
-from driftserverpages.utils import sqlalchemy_tenant_session, role_required, log_action
-from driftserverpages.db.models import PlayerInfo
-from driftserverpages.db.models import User as AdminUser
+from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
+from adminweb.db.models import PlayerInfo
+from adminweb.db.models import User as AdminUser
 from driftbase.db.models import Client, User, UserRole, CorePlayer, PlayerEvent
 from driftbase.players import log_event
 

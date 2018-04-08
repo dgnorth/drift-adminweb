@@ -1,7 +1,7 @@
 from flask import g
 from flask_restful import abort
 from functools import wraps
-from driftserverpages.db.models import LogAction
+from adminweb.db.models import LogAction
 from contextlib import contextmanager
 from drift.orm import get_sqlalchemy_session
 from driftconfig.util import get_domains, get_default_drift_config
