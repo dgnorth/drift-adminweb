@@ -28,9 +28,19 @@ This starts a server on port 5000:
 ```bash
 pipenv shell  # Make sure the virtualenv is active
 
-export FLASK_APP=drift.appmodule:app
+export FLASK_APP=drift.devserver:app && export FLASK_ENV=development
 flask run
 ```
 
 Try it out here: 
 [http://localhost:5000/](http://localhost:5000/)
+
+
+Fun fact: It's also possible to run a server using *uwsgi*:
+
+```bash
+pipenv shell --site-packages  # Make sure the virtualenv is active
+
+export FLASK_APP=drift.devserver:app && export FLASK_ENV=development
+uwsgi --module=drift.devserver:app --http=0.0.0.0:5000 --venv `pipenv --venv` --chdir ./adminweb
+```
