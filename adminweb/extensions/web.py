@@ -18,6 +18,7 @@ from adminweb.utils import filters
 
 log = logging.getLogger(__name__)
 
+
 def register_extension(app):
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(e):
@@ -39,13 +40,16 @@ def register_extension(app):
                                    ), 500
         else:
             raise
-    cors = CORS(app)
 
-    app.instance_path = pkg_resources.resource_filename('adminweb', '')
-    app.static_folder = pkg_resources.resource_filename('adminweb', 'static')
-    app.template_folder = pkg_resources.resource_filename('adminweb', 'templates')
+    CORS(app)
 
-    print "app.static_folder ", app.static_folder 
+    app.instance_path = abspath(pkg_resources.resource_filename('adminweb', ''))
+    app.static_folder = abspath(pkg_resources.resource_filename('adminweb', 'static'))
+    app.template_folder = abspath(pkg_resources.resource_filename('adminweb', 'templates'))
+    log.info("Init app.instance_path: %s", app.instance_path)
+    log.info("Init app.static_folder: %s", app.static_folder)
+    log.info("Init app.template_folder: %s", app.template_folder)
+
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'

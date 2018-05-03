@@ -8,9 +8,11 @@ Administration portal for drift-base
 ## Installation:
 Run the following commands to install this project in developer mode:
 
+##### Errata: Python 2.7.9 and older won't work because of TLS issues. That is why an explicit version like 2.7.14 needs to be specified. Use [pyenv](https://github.com/pyenv/pyenv) to manage Python versions on your local machine..
+
 ```bash
 pip install --user pipenv
-pipenv install --dev
+pipenv install --dev --python 2.7.14
 ```
 
 Run the following commands to enable drift and drift-config in developer mode for this project:
