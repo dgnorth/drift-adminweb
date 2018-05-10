@@ -8,8 +8,13 @@ from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.core.resources.postgres import format_connection_string
 from drift.orm import get_sqlalchemy_session
 
+from adminweb.utils import get_sqlalchemy_tenant_session
+
 
 def get_metrics_session():
+
+    return get_sqlalchemy_tenant_session()
+
     tenant = tenant_from_hostname
     try:
         metrics_server = current_app.config['METRICS_SERVER']

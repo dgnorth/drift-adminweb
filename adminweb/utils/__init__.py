@@ -44,9 +44,9 @@ def log_action(name, severity='info', details=None, ref=None, db=None):
     return log_row.id
 
 
-
-@contextmanager
-def sqlalchemy_tenant_session(tenant_name=None, tier_name=None, deployable_name=None):
+def get_sqlalchemy_tenant_session(
+    tenant_name=None, tier_name=None, deployable_name=None
+    ):
     tenant_name = tenant_name or tenant_from_hostname
     tier_name = tier_name or get_tier_name()
     deployable_name = deployable_name or current_app.config['name']
@@ -55,6 +55,14 @@ def sqlalchemy_tenant_session(tenant_name=None, tier_name=None, deployable_name=
         tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
     conn_string = format_connection_string(config.tenant['postgres'])
     session = get_sqlalchemy_session(conn_string)
+    return session
+
+
+@contextmanager
+def sqlalchemy_tenant_session(tenant_name=None, tier_name=None, deployable_name=None):
+    session = get_sqlalchemy_tenant_session(
+        tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
+
     try:
         yield session
         session.commit()
