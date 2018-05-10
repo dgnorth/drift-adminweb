@@ -9,6 +9,7 @@
     "adminweb.user",
     "adminweb.dashboard",
     "adminweb.players",
+    "adminweb.clients",
     "adminweb.metrics",
     "adminweb.config_pages",
     "adminweb.admin",

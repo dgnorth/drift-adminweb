@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% set active_page = 'clients' %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('clients.index')}}">Clients</a></li>
+  <li class="breadcrumb-item active">Client {{client.client_id}}</li>
+</ol>
+<h2>Client {{client.client_id}} from {{player.player_name}}</h2>
+<br>&nbsp;
+
+<table class="table">
+<tr><td>Create Date</td><td>{{client.create_date | dt}}</td></tr>
+<tr><td>Status</td><td>{{client.status | status}}</td></tr>
+<tr><td>User ID</td><td>{{client.user_id}}</td></tr>
+<tr><td>Player ID</td><td><a href="{{url_for('players.player', player_id=client.player_id)}}">{{client.player_id}}</a></td></tr>
+<tr><td>Heartbeat</td><td>{{client.heartbeat | dt}}</td></tr>
+<tr><td>Num heartbeats</td><td>{{client.num_heartbeats}}</td></tr>
+<tr><td>Build</td><td>{{client.build}}</td></tr>
+<tr><td>Client Type</td><td>{{client.client_type}}</td></tr>
+<tr><td>Platform</td><td>{{client.platform_type}} ( {{client.platform_version}} )</td></tr>
+<tr><td>App Guid</td><td>{{client.app_guid}}</td></tr>
+<tr><td>Identity ID</td><td>{{client.identity_id}}</td></tr>
+<tr>
+    <td>IP Address</td>
+    <td>{{client | client_ip}}</td>
+</tr>
+<tr><td>Platform Info</td><td>{{client.platform_info | fmt_dict}}</td></tr>
+</table>
+
+<style>
+td:nth-child(1) {  
+    text-align: right;
+    padding-right: 5px;
+    vertical-align: top;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

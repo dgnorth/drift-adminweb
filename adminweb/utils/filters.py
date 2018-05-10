@@ -23,7 +23,7 @@ def fmt_dict(value):
             v = "<pre>%s</pre>" % json.dumps(v, indent=4)
         ret += "<tr><th class=key>%s</th><td>%s</td></tr>" % (k, v)
     ret += "</table>"
-    return ret
+    return Markup(ret)
 
 @blueprint.app_template_filter()
 def fmt_dict_inline(value):
@@ -50,7 +50,7 @@ def _fmt_dict(value):
             v = "<pre>%s</pre>" % json.dumps(v, indent=4)
         lst.append('<span class="inldctkey">%s:</span> <span class="inldctval">%s</span>' % (k, v))
     ret = ", ".join(lst)
-    return ret
+    return Markup(ret)
 
 @blueprint.app_template_filter()
 def dt(value, format='%Y-%m-%d %H:%M'):
@@ -112,7 +112,7 @@ def fmt_logevent(value):
     else:
         icon = '<span class="label"><i class="fa fa-info-circle" title="info"></i></span>'
     ret = '{} {}{}'.format(icon, title, link)
-    return ret
+    return Markup(ret)
 
 @blueprint.app_template_filter()
 def date_to_millis(d):
@@ -195,4 +195,27 @@ def status(s):
     elif s == 'disabled':
         cls = 'badge-warning'
     ret = '<span class="badge %s">%s</span>' % (cls, s)
+    return Markup(ret)
+
+
+@blueprint.app_template_filter()
+def client_ip(client, include_country=True):
+    try:
+        ret = '<a href="{url}">{ip}</a><div class="float-left"><img data-toggle="tooltip" title="{name}" src="{flag}" class="countryflag"></div>'.format(ip=client.ip_address,
+                                               name=client.country['country_name'],
+                                               flag=client.country['flag'],
+                                               url=flask.url_for('clients.index', ip_address=client.ip_address))
+        if include_country:
+            ret += ' ({name})'.format(name=client.country['country_name'])
+    except:
+        ret = client.ip_address
+
+    return Markup(ret)
+
+
+@blueprint.app_template_filter()
+def player_url(txt, player_id=None):
+    if not player_id:
+        player_id = txt
+    ret = '<a href="%s">%s</a>' % (flask.url_for('players.player', player_id=player_id), txt)
     return Markup(ret)
