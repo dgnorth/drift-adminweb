@@ -17,7 +17,7 @@ import datetime, random, string
 bp = Blueprint('user', __name__, url_prefix='/admin/')
 
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = os.environ['ADMIN_PASSWORD']
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'test')
 
 
 def create_password():
@@ -25,11 +25,16 @@ def create_password():
     return password
 
 
-def create_user(username, password):
+def create_admin(username, password):
     user = User(username, password)
     g.db.add(user)
+    g.db.flush()
+    role = WebUserRole(user_id=user.user_id, role='roleadmin')
+    g.db.add(role)
     g.db.commit()
+
     return user
+
 
 class LoginForm(Form):
     username = fields.StringField(validators=[InputRequired()])
@@ -39,7 +44,7 @@ class LoginForm(Form):
         user = g.db.query(User).filter(User.username == form.username.data, User.status == 'active').first()
         if user is None:
             if form.username.data == ADMIN_USERNAME:
-                user = create_user(form.username.data, ADMIN_PASSWORD)
+                user = create_admin(form.username.data, ADMIN_PASSWORD)
             else:
                 raise ValidationError("User not found")
         form.user = user
