@@ -21,7 +21,6 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 import datetime, time
 from driftconfig.util import get_default_drift_config
-from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 from adminweb.utils.metrics import metrics_agent
 
@@ -41,14 +40,14 @@ def count_sql(session, sql):
     return int(ret)
 
 def get_glance_stats(session, session_drift, metrics):
-    num_players = count_sql(session, 'SELECT COUNT(*) FROM dsp_players WHERE npc = False')
-    # num_matches = count_sql(session, 'SELECT COUNT(*) FROM dsp_matches2')
-    # num_decks = count_sql(session, 'SELECT COUNT(*) FROM dsp_player_decks')
-    num_players_online = count_sql(session, "SELECT COUNT(*) FROM dsp_players WHERE npc = False AND last_heartbeat > current_timestamp - interval '150 seconds'")
-    num_logons_today = count_sql(session_drift, "SELECT COUNT(*) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
-    num_players_today = count_sql(session_drift, "SELECT COUNT(DISTINCT C.player_id) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
-    num_matches_today = count_sql(session, "SELECT COUNT(*) FROM dsp_matches2 WHERE create_date >= current_timestamp - interval '1 day'")
-    num_missions_today = count_sql(session, "SELECT COUNT(*) FROM dsp_player_daily_missions WHERE completed_date >= current_timestamp - interval '1 day'")
+    num_players = 123#count_sql(session, 'SELECT COUNT(*) FROM ks_players WHERE npc = False')
+    # num_matches = count_sql(session, 'SELECT COUNT(*) FROM ks_matches2')
+    # num_decks = count_sql(session, 'SELECT COUNT(*) FROM ks_player_decks')
+    num_players_online = 1#count_sql(session, "SELECT COUNT(*) FROM ks_players WHERE npc = False AND last_heartbeat > current_timestamp - interval '150 seconds'")
+    num_logons_today = 2#count_sql(session_drift, "SELECT COUNT(*) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
+    num_players_today = 3#count_sql(session_drift, "SELECT COUNT(DISTINCT C.player_id) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
+    num_matches_today = 4#count_sql(session, "SELECT COUNT(*) FROM ks_matches2 WHERE create_date >= current_timestamp - interval '1 day'")
+    num_missions_today = 5#count_sql(session, "SELECT COUNT(*) FROM ks_player_daily_missions WHERE completed_date >= current_timestamp - interval '1 day'")
     glance_stats = [
         {
             'title': 'Total players',
@@ -128,9 +127,8 @@ def get_glance_stats(session, session_drift, metrics):
 @bp.route('/')
 @login_required
 def index():
-    tenant = tenant_from_hostname
     with metrics_agent() as metrics:
-        with sqlalchemy_tenant_session(tenant, get_tier_name(), 'drift-base') as session_drift:
+        with sqlalchemy_tenant_session(deployable_name='drift-base') as session_drift:
             glance_stats = get_glance_stats(session_drift, session_drift, metrics)
 
         players_created_per_day = metrics.get_counter_data(('created_users', '1 day'), 60, title='Players Created')

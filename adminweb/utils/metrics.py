@@ -29,7 +29,8 @@ def metrics_agent():
     agent = MetricsAgent()
     try:
         yield agent
-        agent.session.commit()
+        if agent.session:
+            agent.session.commit()
     except BaseException:
         if agent.session:
             agent.session.rollback()

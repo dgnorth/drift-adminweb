@@ -1,14 +1,17 @@
-from flask import g
+from contextlib import contextmanager
+
+from flask import g, current_app
 from flask_restful import abort
 from functools import wraps
-from adminweb.db.models import LogAction
-from contextlib import contextmanager
-from drift.orm import get_sqlalchemy_session
-from driftconfig.util import get_domains, get_default_drift_config
-from driftconfig.relib import create_backend, get_store_from_url
-from drift.core.resources.postgres import format_connection_string
 
-import re
+from driftconfig.util import get_drift_config
+from driftconfig.relib import create_backend, get_store_from_url
+from drift.core.resources.postgres import format_connection_string, get_sqlalchemy_session
+from drift.core.extensions.tenancy import tenant_from_hostname
+from drift.utils import get_tier_name
+
+from adminweb.db.models import LogAction
+
 
 BASE_SERVICE = "drift-base"
 
@@ -43,10 +46,14 @@ def log_action(name, severity='info', details=None, ref=None, db=None):
 
 
 @contextmanager
-def sqlalchemy_tenant_session(tenant, tier, deployable):
-    ts = get_default_drift_config()
-    tenant_deployable_config = ts.get_table('tenants').get({'tier_name': tier.upper(), 'tenant_name': tenant, 'deployable_name': deployable})
-    conn_string = format_connection_string(tenant_deployable_config["postgres"])
+def sqlalchemy_tenant_session(tenant_name=None, tier_name=None, deployable_name=None):
+    tenant_name = tenant_name or tenant_from_hostname
+    tier_name = tier_name or get_tier_name()
+    deployable_name = deployable_name or current_app.config['name']
+
+    config = get_drift_config(
+        tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
+    conn_string = format_connection_string(config.tenant['postgres'])
     session = get_sqlalchemy_session(conn_string)
     try:
         yield session
