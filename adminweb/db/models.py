@@ -91,3 +91,60 @@ class PlayerInfo(ModelBase):
     admin_user_id = Column(Integer, index=True)
     notes = Column(Text, nullable=True)
     details = Column(JSON, nullable=True)
+
+
+def on_create_db(engine):
+    create_metrics_tables(engine)
+
+
+def create_metrics_tables(engine):
+    engine.execute("""
+CREATE TABLE public.counters
+(
+    counter_id serial NOT NULL,
+    name text COLLATE pg_catalog."default",
+    date_created timestamp without time zone,
+    description text COLLATE pg_catalog."default",
+    is_absolute boolean DEFAULT false,
+    period text,
+    CONSTRAINT counters_pkey PRIMARY KEY (counter_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+
+CREATE TABLE public.counter_columns
+(   
+    id serial NOT NULL,
+    num integer DEFAULT 0,
+    name text,
+    counter_id integer,
+    CONSTRAINT counter_columns_pkey PRIMARY KEY (id)
+) TABLESPACE pg_default;
+
+
+CREATE TABLE public.counter_entries
+(
+    id serial NOT NULL,
+    date_time timestamp without time zone,
+    value double precision,
+    counter_id integer,
+    column_number integer DEFAULT 0,
+    CONSTRAINT counter_entries_pkey PRIMARY KEY (id)
+)
+TABLESPACE pg_default;
+
+
+CREATE OR REPLACE VIEW public.counters_view AS
+ SELECT c.counter_id,
+    c.name,
+    c.period,
+    e.date_time,
+    e.column_number,
+    e.value
+   FROM counters c
+     JOIN counter_entries e ON e.counter_id = c.counter_id;
+
+        """)
