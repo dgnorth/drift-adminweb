@@ -1,18 +1,19 @@
-import datetime, socket
-from os.path import join, abspath
-import sys
+import datetime
+import socket
+from os.path import abspath
 import json
 import pkg_resources
 
-from flask import g, render_template, current_app
+from flask import g, render_template
 from flask_login import LoginManager, current_user
 from flask_cors import CORS
 from flask_gravatar import Gravatar
 
+from werkzeug.exceptions import HTTPException
+
 from adminweb.utils import InvalidUsage
 from adminweb.db.models import User
 import logging
-import traceback
 
 from adminweb.utils import filters
 
@@ -26,20 +27,6 @@ def register_extension(app):
                                message=e.message,
                                status_code=e.status_code
                                ), e.status_code
-
-    @app.errorhandler(Exception)
-    def handle_exception(e):
-        if current_app.config.get("show_exceptions"):
-            log.exception("Unhandled exception!")
-            ex_type, ex, tb = sys.exc_info()
-            tb = "\n".join(traceback.format_tb(tb))
-            return render_template('runtimeerror.html',
-                                   message=repr(e),
-                                   traceback=tb,
-                                   status_code=500
-                                   ), 500
-        else:
-            raise
 
     CORS(app)
 
