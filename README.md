@@ -6,43 +6,30 @@ Administration portal for drift-base
 
 
 ## Installation:
-Run the following commands to install this project in developer mode:
 
-##### Errata: Python 2.7.9 and older won't work because of TLS issues. That is why an explicit version like 2.7.14 needs to be specified. Use [pyenv](https://github.com/pyenv/pyenv) to manage Python versions on your local machine..
+This project depends on **drift-base** so both projects need to be cloned from GitHub and a shared Drift Config DB is required as well.
+  
+First prepare your workstation using [these instructions](https://github.com/dgnorth/drift/blob/develop/README.md#prepare-your-workstation) if you have not already done so.
 
-```bash
-pip install --user pipenv
-pipenv install --dev --python 2.7.14
-```
-
-Run the following commands to enable drift and drift-config in developer mode for this project:
+Run the following commands to install **drift-base** and **drift-adminweb** in developer mode:
 
 ```bash
-pipenv shell  # Make sure the virtualenv is active
+# Clone and configure the drift-base projectgit clone https://github.com/dgnorth/drift-base.gitcd drift-basepipenv install --devpipenv run dconf developer --shared
+cd ..
 
-pip install -e "../drift[aws,test]"
-pip install -e "../drift-config[s3-backend,redis-backend]"
+git clone https://github.com/dgnorth/drift-adminweb.gitcd drift-adminweb
+pipenv install --devpipenv run dconf developer --shared
 ```
 
-## Run localserver
-This starts a server on port 5000:
+## Run development server
+
+To run a server locally:
 
 ```bash
-pipenv shell  # Make sure the virtualenv is active
-
-export FLASK_APP=drift.devserver:app && export FLASK_ENV=development
-flask run
+# In drift-adminweb directory:
+pipenv run dconf developer --shared --run
 ```
 
-Try it out here: 
-[http://localhost:5000/](http://localhost:5000/)
+Server is running at [http://localhost:5000/](http://localhost:5000/)
 
-
-Fun fact: It's also possible to run a server using *uwsgi*:
-
-```bash
-pipenv shell --site-packages  # Make sure the virtualenv is active
-
-export FLASK_APP=drift.devserver:app && export FLASK_ENV=development
-uwsgi --module=drift.devserver:app --http=0.0.0.0:5000 --venv `pipenv --venv` --chdir ./adminweb
-```
+Username and password is **admin** and **test**.
