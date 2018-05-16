@@ -116,7 +116,7 @@
         "drift": {
             "editable": true,
             "git": "https://mattig@github.com/dgnorth/drift.git",
-            "ref": "b14071c647616735b0ac13ca11992eee3c085963"
+            "ref": "3cc76529eba634812031604b2ff46fc695239374"
         },
         "driftbase": {
             "git": "https://github.com/dgnorth/drift-base.git",
@@ -125,7 +125,7 @@
         "driftconfig": {
             "editable": true,
             "git": "https://mattig@github.com/dgnorth/drift-config.git",
-            "ref": "8f06cf819c9a60cac427288b97dbed715f86c2a3"
+            "ref": "9ccaddffd124b6e10cf4ca7985c4204ae396060b"
         },
         "enum34": {
             "hashes": [
@@ -393,7 +393,7 @@
                 "sha256:330cc27ccbf7f1e992e69fef78261dc7c6569012cf397db8d3de0234e6c937ca",
                 "sha256:a7bb0f2cf3a3fd1ab2732cb49eba4252c2af4240442415b4abce3b87022a8f50"
             ],
-            "markers": "python_version < '3.0'",
+            "markers": "python_version < '3.3'",
             "version": "==1.0.2"
         },
         "idna": {
@@ -422,10 +422,10 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:4e8a0ed6a8705a26768f4c3da26026013b157821fe5f95881599556ea9d91c19",
-                "sha256:dae4aaa78eafcad10ce2581fc34d694faa616727837fd8e55c1a00951ad6744f"
+                "sha256:680bf5ba9b28dd56e08eb7c267991a37c7a5f90a92c2e07108829931a50ff80a",
+                "sha256:6874feb22334a1e9a515193cba797664e940b763440c88115009ec323a7f2df5"
             ],
-            "version": "==4.0.2"
+            "version": "==4.0.3"
         },
         "pluggy": {
             "hashes": [
