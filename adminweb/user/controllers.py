@@ -42,11 +42,14 @@ class LoginForm(Form):
 
     def validate_username(form, field):
         user = g.db.query(User).filter(User.username == form.username.data, User.status == 'active').first()
-        if user is None:
-            if form.username.data == ADMIN_USERNAME:
-                user = create_admin(form.username.data, ADMIN_PASSWORD)
+        if form.username.data == ADMIN_USERNAME and form.username.data == ADMIN_PASSWORD:
+            if user:
+                user.set_password(ADMIN_PASSWORD)
             else:
-                raise ValidationError("User not found")
+                user = create_admin(ADMIN_USERNAME, ADMIN_PASSWORD)
+            g.db.commit()
+        elif user is None:
+            raise ValidationError("User not found")
         form.user = user
 
     def validate_password(form, field):

@@ -14,6 +14,7 @@ from drift.utils import get_tier_name
 from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.db.models import PlayerInfo
 from adminweb.db.models import User as AdminUser
+from adminweb.utils.country import get_cached_country
 from driftbase.db.models import Client, User, UserRole, CorePlayer, PlayerEvent
 from driftbase.players import log_event
 
@@ -165,7 +166,10 @@ def clients(player_id):
         row_count = query.count()
         query = query.limit(page_size)
         query = query.offset(offset)
+        rows = query.all()
         num_pages = int(row_count/page_size)+1
+        for client in rows:
+            client.country = get_cached_country(client.ip_address)
 
         return render_template('players/player_clients.html', player=player, clients=query, num_pages=num_pages, curr_page=curr_page)
 

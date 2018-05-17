@@ -5,7 +5,7 @@
 {%block content%}
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
+  <li class="breadcrumb-item active"><{{player.player_name | player_url(player.player_id)}}</li>
   <li class="breadcrumb-item active">Clients</li>
 </ol>
 
@@ -21,11 +21,11 @@
 <tbody>
 {%for client in clients%}
     <tr>
-        <td>{{client.client_id}}</td>
+        <td><a href="{{url_for('clients.client', client_id=client.client_id)}}">{{client.client_id}}</a></td>
         <td>{{client.create_date | dt}}</td>
         <td>{{client.heartbeat | dt}}</td>
         <td>{{client.num_heartbeats}}</td>
-        <td>{{client.ip_address}}</td>
+        <td>{{client.ip_address}}<div class="float-left"><img data-toggle="tooltip" title="{{client.country.country_name}}" src="{{client.country.flag}}" class="countryflag"></div></td>
         <td>{{client.status}}</td>
     </tr>
 {%endfor%}
@@ -36,6 +36,6 @@
 
 {% block scripts %}
 <script>
-pagination({{curr_page}}, {{num_pages}})
+pagination({{curr_page}}, {{num_pages}});
 </script>
 {% endblock %}

@@ -1,3 +1,8 @@
+.countryflag {
+   height:14px;
+   vertical-align:baseline;
+   padding-right:5px;
+}
 body {
   padding-top: 20px;
 }

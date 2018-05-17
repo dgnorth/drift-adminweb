@@ -18,12 +18,8 @@
 <h2>{{player.player_name}}</h2>
 <div class="float-right">
 <a href="{{url_for('players.player_events', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Events</a>
-<a href="{{url_for('matches.index', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Matches</a>
-<a href="{{url_for('players.player_library', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Library</a>
-<a href="{{url_for('players.player_packs', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Packs</a>
 <a href="{{url_for('players.clients', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Clients</a>
 
-<a href="{{url_for('players.player_missions', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Missions</a>
 </div>
 <br>&nbsp;
 <table class="table">
@@ -91,27 +87,6 @@
         </div>
 
 </td>
-</tr>
-</table>
-<br>
-<table class="table">
-<tr>
-    <th><img src="{{ url_for('static', filename='img/gold.png') }}"> &nbsp;Gold</th>
-    <td>{{player.gold}}</td>
-    <td>
-        <div class="float-right">
-            <a href="{{url_for('players.edit_gold', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change</a>  <a href="{{url_for('players.give_gold', player_id=player.player_id)}}" class="btn btn-xs btn-outline-info">give</a>&nbsp;<a href="{{url_for('players.player_events', player_id=player.player_id, event_type_name='gold')}}" class="btn btn-xs btn-outline-secondary">events</a>
-        </div>
-    </td></tr>
-<tr>
-    <th><img src="{{ url_for('static', filename='img/dust.png') }}"> &nbsp;Dust</th>
-    <td>{{player.dust}}</td>
-    <td>
-        <div class="float-right">
-            <a href="{{url_for('players.edit_dust', player_id=player.player_id)}}" class="btn btn-xs btn-outline-primary">change</a> <a href="{{url_for('players.give_dust', player_id=player.player_id)}}" class="btn btn-xs btn-outline-info">give</a>&nbsp;
-    <a href="{{url_for('players.player_events', player_id=player.player_id, event_type_name='dust')}}" class="btn btn-xs btn-outline-secondary">events</a>
-        </div>
-    </td>
 </tr>
 </table>
 
