@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% set active_page = 'users' %}
+
+{% macro write_role(role) %}
+    {%if role == 'dev'%}
+        <span class="badge badge-info">{{role}}</span>
+    {%else%}
+        <span class="label label-default">{{role}}</span>
+    {%endif%}
+{% endmacro %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('users.index')}}">Users</a></li>
+  <li class="breadcrumb-item active">{{user.user_name}}</li>
+</ol>
+
+<h2>{{user.user_name}}</h2>
+
+<table class="table">
+<tr>
+    <td>User ID</td>
+    <td>{{user.user_id}}</td>
+</tr>
+<tr>
+    <td>User Name</td>
+    <td>{{user.user_name}}
+    </td>
+</tr>
+<tr>
+    <td>Last Logon</td>
+    <td>{{user.logon_date | dt}}</td>
+</tr>
+<tr>
+    <td>Num Logons</td>
+    <td>{{user.num_logons}}</td>
+</tr>
+<tr>
+    <td>NPC</td>
+    <td>{{user.npc}}</td>
+</tr>
+<tr>
+    <td>Last Heartbeat</td>
+    <td>{{user.last_heartbeat | dt}}</td>
+</tr>
+<tr>
+    <td>Status</td>
+    <td>{{user.status | status}}</td>
+</tr>
+<tr>
+    <td>Create Date</td>
+    <td>{{user.create_date | dt}}</td>
+</tr>
+<tr>
+    <td style="width:1%"><nobr>Daily Mission Renewal</nobr></td>
+    <td>{{user.last_daily_mission_renewal | dt}}
+        {%if last_daily_mission_renewal:%}
+        <div class="float-right"><a href="{{url_for('users.missions_clear_renewal', user_id=user.user_id)}}" class="btn btn-xs btn-outline-outline-warning">clear</a></div>
+        {%endif%}
+</td>
+</tr>
+
+<tr>
+    <td>User ID</td>
+    <td>{{user.user_id}}</td>
+</tr>
+<tr>
+    <td>User Roles</td>
+    <td>
+    {%if roles:%}
+        {%for r in roles:%}
+            {{r.role | role}}
+        {%endfor%}
+    {%else%}
+        {{"none" | role}}
+    {%endif%}
+
+</td>
+</tr>
+</table>
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

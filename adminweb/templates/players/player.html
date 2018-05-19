@@ -70,7 +70,7 @@
 
 <tr>
     <td>User ID</td>
-    <td>{{player.user_id}}</td>
+    <td><a href="{{url_for("users.user", user_id=player.user_id)}}">{{player.user_id}}</a></td>
 </tr>
 <tr>
     <td>User Roles</td>

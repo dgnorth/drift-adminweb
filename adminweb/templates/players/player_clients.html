@@ -26,7 +26,7 @@
         <td>{{client.heartbeat | dt}}</td>
         <td>{{client.num_heartbeats}}</td>
         <td>{{client.ip_address}}<div class="float-left"><img data-toggle="tooltip" title="{{client.country.country_name}}" src="{{client.country.flag}}" class="countryflag"></div></td>
-        <td>{{client.status}}</td>
+        <td>{{client.status | status}}</td>
     </tr>
 {%endfor%}
 </tbody>

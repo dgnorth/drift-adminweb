@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
-{% set active_page = 'players' %}
+{% set active_page = 'users' %}
 {% import "macros.html" as macros %}
 
 {%block content%}
 
-<h2><i class="fa fa-user"></i> Players</h2>
+<h2><i class="fa fa-user"></i> Users</h2>
 <div class="container" style="padding-bottom:10px;">
 <form method="get" class="form-inline">
-    <input type="text" class="form-control" id="player_id" name="player_id" placeholder="Player ID" value="{{request.args.get('player_id') or ''}}">
-    <input type="text" class="form-control" id="player_name" name="player_name" placeholder="Player Name" value="{{request.args.get('player_name') or ''}}">
+    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="User ID" value="{{request.args.get('user_id') or ''}}">
+    <input type="text" class="form-control" id="user_name" name="user_name" placeholder="User Name" value="{{request.args.get('user_name') or ''}}">
 
-    {{macros.order_by_combo(['logon_date', 'player_name', 'num_logons'])}}
+    {{macros.order_by_combo(['logon_date', 'user_name', 'num_logons'])}}
     &nbsp;
   <button type="submit" class="btn btn-primary">Filter</button>
 </form>
@@ -22,26 +22,26 @@
 <thead>
 <tr>
     <th>ID</th>
-    <th>Player Name</th>
+    <th>User Name</th>
     <th>Created</th>
     <th>Last Logon</th>
     <th>Logons</th>
 </tr>
 </thead>
 <tbody>
-{% for player in players %}
+{% for user in users %}
 <tr>
-    <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_id}}</a></td>
-    <td>{{player.player_name}}
-    {%if player.is_online%}
+    <td><a href="{{url_for('users.user', user_id=user.user_id)}}">{{user.user_id}}</a></td>
+    <td>{{user.user_name}}
+    {%if user.is_online%}
         <div class="float-right" title="User is online">
             <i class="fa fa-user" style="color:green"></i>
         </div>
     {%endif%}
     </td>
-    <td>{{player.create_date | dt}}</td>
-    <td>{{player.logon_date | dt}}</td>
-    <td>{{player.num_logons}}</td>
+    <td>{{user.create_date | dt}}</td>
+    <td>{{user.logon_date | dt}}</td>
+    <td>{{user.num_logons}}</td>
 </tr>
 {% endfor %}
 </tbody>

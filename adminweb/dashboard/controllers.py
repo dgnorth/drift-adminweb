@@ -41,29 +41,15 @@ def count_sql(session, sql):
 
 def get_glance_stats(session, session_drift, metrics):
     num_players = 123#count_sql(session, 'SELECT COUNT(*) FROM ks_players WHERE npc = False')
-    # num_matches = count_sql(session, 'SELECT COUNT(*) FROM ks_matches2')
-    # num_decks = count_sql(session, 'SELECT COUNT(*) FROM ks_player_decks')
-    num_players_online = 1#count_sql(session, "SELECT COUNT(*) FROM ks_players WHERE npc = False AND last_heartbeat > current_timestamp - interval '150 seconds'")
-    num_logons_today = 2#count_sql(session_drift, "SELECT COUNT(*) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
-    num_players_today = 3#count_sql(session_drift, "SELECT COUNT(DISTINCT C.player_id) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE U.user_name LIKE 'steam%%' AND C.create_date > current_timestamp - interval '1 day'")
-    num_matches_today = 4#count_sql(session, "SELECT COUNT(*) FROM ks_matches2 WHERE create_date >= current_timestamp - interval '1 day'")
-    num_missions_today = 5#count_sql(session, "SELECT COUNT(*) FROM ks_player_daily_missions WHERE completed_date >= current_timestamp - interval '1 day'")
+    num_players_online = count_sql(session_drift, "SELECT COUNT(*) FROM ck_clients WHERE heartbeat > current_timestamp - interval '150 seconds'")
+    num_logons_today = count_sql(session_drift, "SELECT COUNT(*) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE C.create_date > current_timestamp - interval '1 day'")
+    num_players_today = count_sql(session_drift, "SELECT COUNT(DISTINCT C.player_id) FROM ck_clients C INNER JOIN ck_users U ON U.user_id = C.user_id WHERE C.create_date > current_timestamp - interval '1 day'")
     glance_stats = [
         {
             'title': 'Total players',
             'value': num_players,
             'icon': 'fa-user'
         },
-        # {
-        #     'title': 'Total matches',
-        #     'value': num_matches,
-        #     'icon': 'fa-gamepad'
-        # },
-        # {
-        #     'title': 'Total decks',
-        #     'value': num_decks,
-        #     'icon': 'fa-club'
-        # },
         {
             'title': 'Players Online',
             'value': num_players_online,
@@ -78,16 +64,6 @@ def get_glance_stats(session, session_drift, metrics):
             'title': 'Players last 24h',
             'value': num_players_today,
             'icon': 'fa-users'
-        },
-        {
-            'title': 'Matches last 24h',
-            'value': num_matches_today,
-            'icon': 'fa-gamepad'
-        },
-        {
-            'title': 'Missions last 24h',
-            'value': num_missions_today,
-            'icon': 'fa-badge-check'
         },
     ]
 
