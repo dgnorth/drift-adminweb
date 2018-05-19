@@ -5,7 +5,7 @@
 {%block content%}
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active"><{{player.player_name | player_url(player.player_id)}}</li>
+  <li class="breadcrumb-item active">{{player.player_name | player_url(player.player_id)}}</li>
   <li class="breadcrumb-item active">Clients</li>
 </ol>
 

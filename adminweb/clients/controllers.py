@@ -22,7 +22,7 @@ bp = Blueprint('clients', __name__, url_prefix='/clients', template_folder="clie
 @bp.route('/')
 @login_required
 def index():
-    page_size = 50
+    page_size = 25
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 

@@ -31,6 +31,10 @@ def create_admin(username, password):
     g.db.flush()
     role = WebUserRole(user_id=user.user_id, role='roleadmin')
     g.db.add(role)
+    role = WebUserRole(user_id=user.user_id, role='useradmin')
+    g.db.add(role)
+    role = WebUserRole(user_id=user.user_id, role='admin')
+    g.db.add(role)
     g.db.commit()
 
     return user
@@ -42,7 +46,7 @@ class LoginForm(Form):
 
     def validate_username(form, field):
         user = g.db.query(User).filter(User.username == form.username.data, User.status == 'active').first()
-        if form.username.data == ADMIN_USERNAME and form.username.data == ADMIN_PASSWORD:
+        if form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
             if user:
                 user.set_password(ADMIN_PASSWORD)
             else:
