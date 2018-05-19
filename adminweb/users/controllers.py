@@ -12,7 +12,7 @@ from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.utils.country import get_cached_country
-from driftbase.db.models import Client, User, UserRole, User, UserEvent
+from driftbase.db.models import Client, User, UserRole, User, UserEvent, UserIdentity
 from driftbase.players import log_event
 
 log = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def index():
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         query = session.query(User)
         if request.args.get('user_id'):
             query = query.filter(User.user_id==int(request.args.get('user_id')))
@@ -53,18 +53,18 @@ def index():
 @bp.route('/users/<int:user_id>')
 @login_required
 def user(user_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         user = session.query(User).get(user_id)
-
-    return render_template('users/user.html',
-                           user=user)
+        identities = session.query(UserIdentity).filter(UserIdentity.user_id==user_id).all()
+        return render_template('users/user.html',
+                               user=user, identities=identities)
 
 
 @bp.route('/users/<int:user_id>/editname', methods=['GET', 'POST'])
 @login_required
 @role_required('cs')
 def edit_user_name(user_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         user = session.query(User).get(user_id)
         if request.method == 'POST':
             old_user_name = user.user_name
@@ -89,7 +89,7 @@ def clients(user_id):
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         user = session.query(User).get(user_id)
         query = session.query(Client).filter(Client.user_id==user_id)
         query = query.order_by(Client.client_id.desc())

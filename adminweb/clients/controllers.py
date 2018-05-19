@@ -26,7 +26,7 @@ def index():
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         query = session.query(Client).filter()
         if request.args.get('player_id'):
             query = query.filter(Client.player_id==int(request.args.get('player_id')))
@@ -53,7 +53,7 @@ def index():
 @bp.route('/clients/<int:client_id>')
 @login_required
 def client(client_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         client = session.query(Client).get(client_id)
         client.country = get_cached_country(client.ip_address) or {}
         player = session.query(CorePlayer).get(client.player_id)

@@ -4,7 +4,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
+  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name or player.player_id}}</a></li>
   <li class="breadcrumb-item active">Player Roles</li>
 </ol>
 

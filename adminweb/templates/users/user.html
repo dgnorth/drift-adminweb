@@ -36,14 +36,6 @@
     <td>{{user.num_logons}}</td>
 </tr>
 <tr>
-    <td>NPC</td>
-    <td>{{user.npc}}</td>
-</tr>
-<tr>
-    <td>Last Heartbeat</td>
-    <td>{{user.last_heartbeat | dt}}</td>
-</tr>
-<tr>
     <td>Status</td>
     <td>{{user.status | status}}</td>
 </tr>
@@ -52,20 +44,17 @@
     <td>{{user.create_date | dt}}</td>
 </tr>
 <tr>
-    <td style="width:1%"><nobr>Daily Mission Renewal</nobr></td>
-    <td>{{user.last_daily_mission_renewal | dt}}
-        {%if last_daily_mission_renewal:%}
-        <div class="float-right"><a href="{{url_for('users.missions_clear_renewal', user_id=user.user_id)}}" class="btn btn-xs btn-outline-outline-warning">clear</a></div>
-        {%endif%}
-</td>
+    <td>Default Player</td>
+    <td><a href="{{url_for('players.player', player_id=user.default_player_id)}}">{{user.default_player_id}}</a></td>
 </tr>
-
+{%if user.client_id:%}
 <tr>
-    <td>User ID</td>
-    <td>{{user.user_id}}</td>
+    <td>Most Recent Client</td>
+    <td><a href="{{url_for('clients.client', client_id=user.client_id)}}">{{user.client_id}}</a></td>
 </tr>
+{%endif%}
 <tr>
-    <td>User Roles</td>
+    <td>Roles</td>
     <td>
     {%if roles:%}
         {%for r in roles:%}
@@ -79,6 +68,55 @@
 </tr>
 </table>
 
+<h3>Players</h3>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Player Name</th>
+    <th>Created</th>
+    <th>Last Logon</th>
+    <th>Logons</th>
+</tr>
+</thead>
+<tbody>
+{% for player in user.players %}
+<tr>
+    <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_id}}</a></td>
+    <td>{{player.player_name}}</td>
+    <td>{{player.create_date | dt}}</td>
+    <td>{{player.logon_date | dt}}</td>
+    <td>{{player.num_logons}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>Identities</h3>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Created</th>
+    <th>Last Logon</th>
+    <th>Logons</th>
+    <th>Last IP Address</th>
+</tr>
+</thead>
+<tbody>
+{% for identity in identities %}
+<tr>
+    <td>{{identity.identity_id}}</td>
+    <td>{{identity.name}}</td>
+    <td>{{identity.create_date | dt}}</td>
+    <td>{{identity.logon_date | dt}}</td>
+    <td>{{identity.num_logons}}</td>
+    <td>{{identity.last_ip_address}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 
 {% endblock %}
 

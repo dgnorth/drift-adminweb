@@ -6,13 +6,13 @@
   <li class="breadcrumb-item"><a href="{{url_for('clients.index')}}">Clients</a></li>
   <li class="breadcrumb-item active">Client {{client.client_id}}</li>
 </ol>
-<h2>Client {{client.client_id}} from {{player.player_name}}</h2>
+<h2>Client {{client.client_id}} from {{player.player_name or "player #%s" % player.player_id}}</h2>
 <br>&nbsp;
 
 <table class="table">
 <tr><td>Create Date</td><td>{{client.create_date | dt}}</td></tr>
 <tr><td>Status</td><td>{{client.status | status}}</td></tr>
-<tr><td>User ID</td><td>{{client.user_id}}</td></tr>
+<tr><td>User ID</td><td><a href="{{url_for('users.user', user_id=client.user_id)}}">{{client.user_id}}</a></td></tr>
 <tr><td>Player ID</td><td><a href="{{url_for('players.player', player_id=client.player_id)}}">{{client.player_id}}</a></td></tr>
 <tr><td>Heartbeat</td><td>{{client.heartbeat | dt}}</td></tr>
 <tr><td>Num heartbeats</td><td>{{client.num_heartbeats}}</td></tr>

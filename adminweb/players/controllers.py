@@ -30,7 +30,7 @@ def index():
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         query = session.query(CorePlayer)
         if request.args.get('player_id'):
             query = query.filter(CorePlayer.player_id==int(request.args.get('player_id')))
@@ -56,7 +56,7 @@ def index():
 @bp.route('/players/<int:player_id>')
 @login_required
 def player(player_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         player = session.query(CorePlayer).get(player_id)
         user = session.query(User).get(player.user_id)
         roles = user.roles
@@ -74,7 +74,7 @@ def player(player_id):
 @bp.route('/players/<int:player_id>/editnote', methods=['POST', 'GET'])
 @login_required
 def edit_player_note(player_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         player = session.query(CorePlayer).get(player_id)
     info = g.db.query(PlayerInfo)\
                .filter(PlayerInfo.player_id==player_id)\
@@ -112,7 +112,7 @@ def player_events(player_id):
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         player = session.query(CorePlayer).get(player_id)
         query = session.query(PlayerEvent) \
                        .filter(PlayerEvent.player_id==player_id)
@@ -134,7 +134,7 @@ def player_events(player_id):
 @login_required
 @role_required('cs')
 def edit_player_name(player_id):
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         player = session.query(CorePlayer).get(player_id)
         if request.method == 'POST':
             old_player_name = player.player_name
@@ -159,7 +159,7 @@ def clients(player_id):
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
 
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         player = session.query(CorePlayer).get(player_id)
         query = session.query(Client).filter(Client.player_id==player_id)
         query = query.order_by(Client.client_id.desc())
@@ -178,7 +178,7 @@ def clients(player_id):
 @role_required('cs')
 def edit_roles(player_id):
     all_roles = [r[0] for r in current_app.config.get('player_roles')]
-    with sqlalchemy_tenant_session(tenant_from_hostname, get_tier_name(), 'drift-base') as drift_session:
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as drift_session:
         player = drift_session.query(CorePlayer).get(player_id)
         user_id = player.user_id
         user = drift_session.query(User).get(player.user_id)

@@ -12,7 +12,7 @@
 {%block content%}
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active">{{player.player_name}}</li>
+  <li class="breadcrumb-item active">{{player.player_name or player.player_id}}</li>
 </ol>
 
 <h2>{{player.player_name}}</h2>
@@ -58,14 +58,6 @@
 <tr>
     <td>Create Date</td>
     <td>{{player.create_date | dt}}</td>
-</tr>
-<tr>
-    <td style="width:1%"><nobr>Daily Mission Renewal</nobr></td>
-    <td>{{player.last_daily_mission_renewal | dt}}
-        {%if last_daily_mission_renewal:%}
-        <div class="float-right"><a href="{{url_for('players.missions_clear_renewal', player_id=player.player_id)}}" class="btn btn-xs btn-outline-outline-warning">clear</a></div>
-        {%endif%}
-</td>
 </tr>
 
 <tr>
