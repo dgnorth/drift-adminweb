@@ -6,6 +6,7 @@ from functools import wraps
 
 from driftconfig.util import get_drift_config
 from driftconfig.relib import create_backend, get_store_from_url
+from drift.core.resources.driftconfig import check_tenant_state
 from drift.core.resources.postgres import format_connection_string, get_sqlalchemy_session
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
@@ -53,6 +54,9 @@ def get_sqlalchemy_tenant_session(
 
     config = get_drift_config(
         tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
+
+    check_tenant_state(config.tenant)
+
     conn_string = format_connection_string(config.tenant['postgres'])
     session = get_sqlalchemy_session(conn_string)
     return session
