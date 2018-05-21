@@ -3,13 +3,31 @@
 from jinja2.utils import Markup
 import flask
 import json
+import copy
 import datetime, time
 from decimal import Decimal
+from dateutil import parser
+import types
 
 blueprint = flask.Blueprint('filters', __name__)
 
+def sanitize(d):
+    if isinstance(d, dict):
+        for k, v in d.iteritems():
+            if 'private' in k or 'password' in k:
+                d[k] = "***"
+            elif isinstance(v, dict):
+                sanitize(v)
+            elif isinstance(v, list):
+                for vv in v:
+                    sanitize(vv)
+            else:
+                print "{0} : {1}".format(k, v)
+    return d
+
 @blueprint.app_template_filter()
 def fmt_dict(value):
+    value = copy.deepcopy(value)
     if isinstance(value, str):
         try:
             value = json.loads(value)
@@ -18,6 +36,7 @@ def fmt_dict(value):
     if not value:
         return ""
     ret = "<table style=\"width:100%%\">"
+    value = sanitize(value)
     for k, v in value.iteritems():
         if isinstance(v, dict) or isinstance(v, list):
             v = "<pre>%s</pre>" % json.dumps(v, indent=4)
@@ -54,6 +73,8 @@ def _fmt_dict(value):
 
 @blueprint.app_template_filter()
 def dt(value, format='%Y-%m-%d %H:%M'):
+    if isinstance(value, types.StringTypes):
+        value = parser.parse(value)
     if not value:
         return "-"
     return value.strftime(format)
