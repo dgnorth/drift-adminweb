@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% set active_page = 'metrics' %}
+
+{%block content%}
+<style>
+h3 {margin-top:10px !important;border-top:1px solid #BBB;}
+h4 {margin-top:10px !important;margin-left:10px;}
+.confrow {margin-top:10px !important;margin-left:20px;}
+small {font-size:50% !important;}
+</style>
+<h2><i class="fa fa-cog"></i> Drift Config Viewer</h2>
+<pre class="alert alert-success">Source: {{ts}}
+Modified: {{meta.find()[0].last_modified}}
+</pre>
+{%for table in tables:%}
+    <h3>{{table}} <small>({{meta_by_table[table].last_modified | dt}})</small></h3>
+    {%if not ts.tables[table]._rows%}
+    <pre>(empty table)</pre>
+    {%endif%}
+    {%for key, row in ts.tables[table]._rows.items()%}
+        <h4>{{key}}</h4>
+        <div class="confrow">
+        {{row | fmt_dict}}
+    </div>
+    {%endfor%}
+{%endfor%}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

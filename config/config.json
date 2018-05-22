@@ -12,7 +12,7 @@
     "adminweb.users",
     "adminweb.clients",
     "adminweb.metrics",
-    "adminweb.config_pages",
+    "adminweb.driftconfig",
     "adminweb.admin",
     "drift.core.apps.schemas",
     "drift.contrib.apps.servicestatus"
