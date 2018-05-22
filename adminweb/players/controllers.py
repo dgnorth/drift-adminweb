@@ -1,4 +1,5 @@
 import collections
+import logging
 
 from flask import Blueprint, request, jsonify, \
                   flash, g, redirect, url_for, \
@@ -6,7 +7,6 @@ from flask import Blueprint, request, jsonify, \
                   current_app
 
 from flask_login import login_required
-import logging
 
 from drift.utils import request_wants_json
 from drift.core.extensions.tenancy import tenant_from_hostname
@@ -139,7 +139,7 @@ def edit_player_name(player_id):
         if request.method == 'POST':
             old_player_name = player.player_name
             player.player_name = request.form['val']
-            log_event(player_id, 
+            log_event(player_id,
                       'event.admin.change_player_name',
                       details={'admin': g.user.username, 'old': old_player_name, 'new': player.player_name},
                       db_session=session)
