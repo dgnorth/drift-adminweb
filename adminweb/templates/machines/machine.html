@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-warning">
+    <h2><i class="fa fa-cog"></i>&nbsp; Machine: {{machine.machine_id}}</h2>
+</div>
+
+<div class="float-right">
+    <button class="btn btn-sm btn-danger">INFO</button>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('machines.machine_events', machine_id=machine.machine_id)}}" class="btn btn-sm btn-secondary">Events</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('machines.machine_servers', machine_id=machine.machine_id)}}" class="btn btn-sm btn-secondary">Servers</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('machines.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
+</div>
+
+<br><br>
+
+<table class="table">
+<tr>
+    <td><strong>Machine ID</strong></td>
+    <td>{{machine.machine_id}}</td>
+</tr>
+<tr>
+    <td><strong>Realm</strong></td>
+    <td>{{machine.realm}}</td>
+</tr>
+<tr>
+    <td><strong>Instance ID</strong></td>
+    <td>{{machine.instance_id}}</td>
+</tr>
+<tr>
+    <td><strong>Instance Type</strong></td>
+    <td>{{machine.instance_type}}</td>
+</tr>
+<tr>
+    <td><strong>Instance Name</strong></td>
+    <td>{{machine.instance_name}}</td>
+</tr>
+<tr>
+    <td><strong>Placement</strong></td>
+    <td>{{machine.placement}}</td>
+</tr>
+<tr>
+    <td><strong>Public IP</strong></td>
+    <td>{{machine.public_ip}}</td>
+</tr>
+<tr>
+    <td><strong>Private IP</strong></td>
+    <td>{{machine.private_ip}}</td>
+</tr>
+<tr>
+    <td><strong>Status</strong></td>
+    <td>{{machine.status}}</td>
+</tr>
+<tr>
+    <td><strong>Server Count</strong></td>
+    <td>{{machine.server_count}}</td>
+</tr>
+<tr>
+    <td><strong>Server Date</strong></td>
+    <td>{{machine.server_date}}</td>
+</tr>
+<tr>
+    <td><strong><nobr>Heartbeat Date</nobr></strong></td>
+    <td>{{machine.heartbeat_date}}</td>
+</tr>
+<tr>
+    <td><strong>Create Date</strong></td>
+    <td>{{machine.create_date}}</td>
+</tr>
+<tr>
+    <td><strong>Modify Date</strong></td>
+    <td>{{machine.modify_date}}</td>
+</tr>
+<tr>
+    <td><strong>Machine Info</strong></td>
+    <td>{{machine.machine_info}}</td>
+</tr>
+<tr>
+    <td><strong>Config</strong></td>
+    <td>{{machine.config}}</td>
+</tr>
+<tr>
+    <td><strong>Statistics</strong></td>
+    <td>{{machine.statistics}}</td>
+</tr>
+<tr>
+    <td><strong>Details</strong></td>
+    <td>{{machine.details}}</td>
+</tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

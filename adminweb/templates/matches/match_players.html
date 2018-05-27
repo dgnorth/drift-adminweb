@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-warning">
+    <h2><i class="fa fa-trophy-alt"></i>&nbsp; Match: {{match.match_id}}</h2>
+</div>
+
+<div class="float-right">
+    <a href="{{url_for('matches.match', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">INFO</a>
+    &nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-danger">Players</button>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_teams', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Teams</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_events', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Events</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_queueplayers', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Queue Players</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
+</div>
+
+<br><br>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Player ID</th>
+    <th>Player Name</th>
+    <th>Team ID</th>
+    <th>Join Date</th>
+    <th>Leave Date</th>
+    <th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for player in players %}
+<tr>
+    <td>{{player[0].id}}</td>
+    <td><a href="{{url_for('players.player', player_id=player[0].player_id)}}">{{player[0].player_id}}</a></td>
+    <td><a href="{{url_for('players.player', player_id=player[0].player_id)}}">{{player[1].player_name}}</a></td>
+    <td>{{player[0].team_id}}</td>
+    <td>{{player[0].join_date | dt}}</td>
+    <td>{{player[0].leave_date | dt}}</td>
+    <td>{{player[0].status}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

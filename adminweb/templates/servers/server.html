@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-warning">
+    <h2><i class="fa fa-cube"></i>&nbsp; Server: {{server.server_id}}</h2>
+</div>
+
+<div class="float-right">
+    <button class="btn btn-sm btn-danger">INFO</button>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('servers.server_matches', server_id=server.server_id)}}" class="btn btn-sm btn-secondary">Matches</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('servers.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
+</div>
+
+<br><br>
+
+<table class="table">
+<tr>
+    <td><strong>Server ID</strong></td>
+    <td>{{server.server_id}}</td>
+</tr>
+<tr>
+    <td><strong>Machine ID</strong></td>
+    <td><a href="{{url_for('machines.machine', machine_id=server.machine_id)}}">{{server.machine_id}}</a></td>
+</tr>
+<tr>
+    <td><strong>Version</strong></td>
+    <td>{{server.version}}</td>
+</tr>
+<tr>
+    <td><strong>Public IP</strong></td>
+    <td>{{server.public_ip}}</td>
+</tr>
+<tr>
+    <td><strong>Port</strong></td>
+    <td>{{server.port}}</td>
+</tr>
+<tr>
+    <td><strong>Command Line</strong></td>
+    <td>{{server.command_line}}</td>
+</tr>
+<tr>
+    <td><strong><nobr>Command Line Custom</nobr></strong></td>
+    <td>{{server.command_line_custom}}</td>
+</tr>
+<tr>
+    <td><strong>PID</strong></td>
+    <td>{{server.pid}}</td>
+</tr>
+<tr>
+    <td><strong>Status</strong></td>
+    <td>{{server.status}}</td>
+</tr>
+<tr>
+    <td><strong>Status Date</strong></td>
+    <td>{{server.status_date}}</td>
+</tr>
+<tr>
+    <td><strong>Heartbeat Date</strong></td>
+    <td>{{server.heartbeat_date}}</td>
+</tr>
+<tr>
+    <td><strong>Heartbeat Count</strong></td>
+    <td>{{server.heartbeat_count}}</td>
+</tr>
+<tr>
+    <td><strong>Error</strong></td>
+    <td>{{server.error}}</td>
+</tr>
+<tr>
+    <td><strong>Image Name</strong></td>
+    <td>{{server.image_name}}</td>
+</tr>
+<tr>
+    <td><strong>Branch</strong></td>
+    <td>{{server.branch}}</td>
+</tr>
+<tr>
+    <td><strong>Commit ID</strong></td>
+    <td>{{server.commit_id}}</td>
+</tr>
+<tr>
+    <td><strong>Process Info</strong></td>
+    <td>{{server.process_info}}</td>
+</tr>
+<tr>
+    <td><strong>Server Statistics</strong></td>
+    <td>{{server.server_statistics}}</td>
+</tr>
+<tr>
+    <td><strong>Details</strong></td>
+    <td>{{server.details}}</td>
+</tr>
+<tr>
+    <td><strong>Repository</strong></td>
+    <td>{{server.repository}}</td>
+</tr>
+<tr>
+    <td><strong>Ref</strong></td>
+    <td>{{server.ref}}</td>
+</tr>
+<tr>
+    <td><strong>Build</strong></td>
+    <td>{{server.build}}</td>
+</tr>
+<tr>
+    <td><strong>Build Number</strong></td>
+    <td>{{server.build_number}}</td>
+</tr>
+<tr>
+    <td><strong>Target Platform</strong></td>
+    <td>{{server.target_platform}}</td>
+</tr>
+<tr>
+    <td><strong>Build Info</strong></td>
+    <td>{{server.build_info}}</td>
+</tr>
+<tr>
+    <td><strong>Token</strong></td>
+    <td>{{server.token}}</td>
+</tr>
+<tr>
+    <td><strong>Create Date</strong></td>
+    <td>{{server.create_date}}</td>
+</tr>
+<tr>
+    <td><strong>Modify Date</strong></td>
+    <td>{{server.modify_date}}</td>
+</tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

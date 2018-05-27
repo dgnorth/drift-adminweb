@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-success">
+    <h2><i class="fa fa-cogs"></i>&nbsp; Machines</h2>
+</div>
+
+<div class="container" style="padding-bottom:10px;">
+<form method="get" class="form-inline">
+    <input type="text" class="form-control" id="machine_id" name="machine_id" placeholder="Machine ID" value="{{request.args.get('machine_id') or ''}}">&nbsp;&nbsp;
+    <input type="text" class="form-control" id="instance_id" name="instance_id" placeholder="Instance ID" value="{{request.args.get('instance_id') or ''}}">&nbsp;&nbsp;
+    {{macros.order_by_combo(['machine_id', 'instance_id', 'instance_type'])}}&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+</div>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Machine ID</th>
+    <th>Realm</th>
+    <th>Instance ID</th>
+    <th>Instance Type</th>
+    <th>Instance Name</th>
+    <th>Public IP</th>
+    <th>Server Count</th>
+</tr>
+</thead>
+<tbody>
+{% for machine in machines %}
+<tr>
+    <td><a href="{{url_for('machines.machine', machine_id=machine.machine_id)}}">{{machine.machine_id}}</a></td>
+    <td>{{machine.realm}}</td>
+    <td>{{machine.instance_id}}</td>
+    <td>{{machine.instance_type}}</td>
+    <td>{{machine.instance_name}}</td>
+    <td>{{machine.public_ip}}</td>
+    <td>{{machine.server_count}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

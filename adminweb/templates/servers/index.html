@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-success">
+    <h2><i class="fa fa-cubes"></i>&nbsp; Servers</h2>
+</div>
+
+<div class="container" style="padding-bottom:10px;">
+<form method="get" class="form-inline">
+    <input type="text" class="form-control" id="server_id" name="server_id" placeholder="Server ID" value="{{request.args.get('server_id') or ''}}">&nbsp;&nbsp;
+    <input type="text" class="form-control" id="public_ip" name="public_ip" placeholder="Public IP" value="{{request.args.get('public_ip') or ''}}">&nbsp;&nbsp;
+    {{macros.order_by_combo(['server_id', 'public_ip', 'status'])}}&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+</div>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Server ID</th>
+    <th>Machine ID</th>
+    <th>Version</th>
+    <th>Public IP</th>
+    <th>Port</th>
+    <th>PID</th>
+    <th>Status</th>
+    <th>Heartbeat Count</th>
+</tr>
+</thead>
+<tbody>
+{% for server in servers %}
+<tr>
+    <td><a href="{{url_for('servers.server', server_id=server.server_id)}}">{{server.server_id}}</a></td>
+    <td><a href="{{url_for('machines.machine', machine_id=server.machine_id)}}">{{server.machine_id}}</a></td>
+    <td>{{server.version}}</td>
+    <td>{{server.public_ip}}</td>
+    <td>{{server.port}}</td>
+    <td>{{server.pid}}</td>
+    <td>{{server.status}}</td>
+    <td>{{server.heartbeat_count}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

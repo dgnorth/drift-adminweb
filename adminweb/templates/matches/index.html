@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-success">
+    <h2><i class="fa fa-trophy"></i>&nbsp; Matches</h2>
+</div>
+
+<div class="container" style="padding-bottom:10px;">
+<form method="get" class="form-inline">
+    <input type="text" class="form-control" id="match_id" name="match_id" placeholder="Match ID" value="{{request.args.get('match_id') or ''}}">&nbsp;&nbsp;
+    {{macros.order_by_combo(['match_id', 'start_date', 'status'])}}&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+</div>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Match ID</th>
+    <th>Server ID</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+    <th>Num Players</th>
+    <th>Max Players</th>
+</tr>
+</thead>
+<tbody>
+{% for match in matches %}
+<tr>
+    <td><a href="{{url_for('matches.match', match_id=match.match_id)}}">{{match.match_id}}</a></td>
+    <td><a href="{{url_for('servers.server', server_id=match.server_id)}}">{{match.server_id}}</a></td>
+    <td>{{match.start_date | dt}}</td>
+    <td>{{match.end_date | dt}}</td>
+    <td>{{match.status}}</td>
+    <td>{{match.num_players}}</td>
+    <td>{{match.max_players}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

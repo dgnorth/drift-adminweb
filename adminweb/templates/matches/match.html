@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+
+{%block content%}
+
+<br>
+<div class="alert alert-warning">
+    <h2><i class="fa fa-trophy-alt"></i>&nbsp; Match: {{match.match_id}}</h2>
+</div>
+
+<div class="float-right">
+    <button class="btn btn-sm btn-danger">INFO</button>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_players', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Players</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_teams', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Teams</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_events', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Events</a>
+    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_queueplayers', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Queue Players</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
+</div>
+
+<br><br>
+
+<table class="table">
+<tr>
+    <td><strong>Match ID</strong></td>
+    <td>{{match.match_id}}</td>
+</tr>
+<tr>
+    <td><strong>Server ID</strong></td>
+    <td><a href="{{url_for('servers.server', server_id=match.server_id)}}">{{match.server_id}}</a></td>
+</tr>
+<tr>
+    <td><strong>Start Date</strong></td>
+    <td>{{match.start_date}}</td>
+</tr>
+<tr>
+    <td><strong>End Date</strong></td>
+    <td>{{match.end_date}}</td>
+</tr>
+<tr>
+    <td><strong>Status</strong></td>
+    <td>{{match.status}}</td>
+</tr>
+<tr>
+    <td><strong>Num Players</strong></td>
+    <td>{{match.num_players}}</td>
+</tr>
+<tr>
+    <td><strong>Max Players</strong></td>
+    <td>{{match.max_players}}</td>
+</tr>
+<tr>
+    <td><strong>Game Mode</strong></td>
+    <td>{{match.game_mode}}</td>
+</tr>
+<tr>
+    <td><strong>Map Name</strong></td>
+    <td>{{match.map_name}}</td>
+</tr>
+<tr>
+    <td><strong><nobr>Match Statistics</nobr></strong></td>
+    <td>{{match.match_statistics}}</td>
+</tr>
+<tr>
+    <td><strong>Details</strong></td>
+    <td>{{match.details}}</td>
+</tr>
+<tr>
+    <td><strong>Status Date</strong></td>
+    <td>{{match.status_date}}</td>
+</tr>
+<tr>
+    <td><strong>Create Date</strong></td>
+    <td>{{match.create_date}}</td>
+</tr>
+<tr>
+    <td><strong>Modify Date</strong></td>
+    <td>{{match.modify_date}}</td>
+</tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
