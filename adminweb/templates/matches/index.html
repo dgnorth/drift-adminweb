@@ -4,10 +4,7 @@
 
 {%block content%}
 
-<br>
-<div class="alert alert-success">
-    <h2><i class="fa fa-trophy"></i>&nbsp; Matches</h2>
-</div>
+<h2><i class="fa fa-trophy"></i>Matches</h2>
 
 <div class="container" style="padding-bottom:10px;">
 <form method="get" class="form-inline">
@@ -16,6 +13,7 @@
     <button type="submit" class="btn btn-primary">Filter</button>
 </form>
 </div>
+<ul class="pagination justify-content-end pagination-sm"></ul>
 
 <table class="table table-striped table-hover">
 <thead>
@@ -47,4 +45,9 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+$(document).ready(function() {
+    pagination({{curr_page}}, {{num_pages}})
+});
+</script>
 {% endblock %}

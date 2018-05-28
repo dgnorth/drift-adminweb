@@ -1,23 +1,8 @@
-{% extends "layout.html" %}
-{% set active_page = 'machines' %}
+{% extends "matches/base_match.html" %}
 
-{%block content%}
+{%block crumb%}Home{%endblock%}
 
-<br>
-<div class="alert alert-warning">
-    <h2><i class="fa fa-trophy-alt"></i>&nbsp; Match: {{match.match_id}}</h2>
-</div>
-
-<div class="float-right">
-    <button class="btn btn-sm btn-danger">INFO</button>
-    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_players', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Players</a>
-    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_teams', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Teams</a>
-    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_events', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Events</a>
-    &nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.match_queueplayers', match_id=match.match_id)}}" class="btn btn-sm btn-secondary">Queue Players</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('matches.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
-</div>
-
-<br><br>
+{%block maincontent%}
 
 <table class="table">
 <tr>

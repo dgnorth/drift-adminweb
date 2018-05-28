@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+{% import "macros.html" as macros %}
+
+
+{%block content%}
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('matches.index')}}">Matches</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('matches.match', match_id=match.match_id)}}">Match {{match.match_id}}</a></li>
+  <li class="breadcrumb-item active">{{page_name}}</li>
+</ol>
+
+
+<h2 class="item_detail_header"><i class="fa fa-trophy"></i>Match {{match.match_id}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page_name=="Home"%}active{%endif%}" href="{{url_for('matches.match', match_id=match.match_id)}}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page_name=="Players"%}active{%endif%}" href="{{url_for('matches.match_players', match_id=match.match_id)}}">Players</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page_name=="Teams"%}active{%endif%}" href="{{url_for('matches.match_teams', match_id=match.match_id)}}">Teams</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page_name=="Events"%}active{%endif%}" href="{{url_for('matches.match_events', match_id=match.match_id)}}">Events</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page_name=="Queue"%}active{%endif%}" href="{{url_for('matches.match_queueplayers', match_id=match.match_id)}}">Queue</a>
+  </li>
+</ul>
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}
