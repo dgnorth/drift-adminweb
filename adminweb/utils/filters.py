@@ -14,7 +14,7 @@ blueprint = flask.Blueprint('filters', __name__)
 def sanitize(d):
     if isinstance(d, dict):
         for k, v in d.iteritems():
-            if 'private' in k or 'password' in k:
+            if 'private' in k or 'password' in k or k == 'key' or k == 'client_secret' or k == 'access_token':
                 d[k] = "***"
             elif isinstance(v, dict):
                 sanitize(v)
