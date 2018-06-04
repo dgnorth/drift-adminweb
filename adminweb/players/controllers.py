@@ -36,13 +36,10 @@ def index():
         players = query
         num_pages = int(row_count/page_size)+1
 
-        if row_count == 1:
-            return redirect(url_for('players.player', player_id=players[0].player_id))
-        else:
-            return render_template('players/index.html', players=players,
-                        num_pages=num_pages,
-                        curr_page=curr_page,
-                        order_by=order_by)
+        return render_template('players/index.html', players=players,
+                               num_pages=num_pages,
+                               curr_page=curr_page,
+                               order_by=order_by)
 
 
 @bp.route('/players/<int:player_id>')
@@ -194,8 +191,8 @@ def player_events(player_id):
         num_pages = int(row_count/page_size)+1
 
         return render_template('players/player_events.html', page='Events', player=player, events=query,
-                        num_pages=num_pages,
-                        curr_page=curr_page)
+                               num_pages=num_pages,
+                               curr_page=curr_page)
 
 
 @bp.route('/players/<int:player_id>/clients')

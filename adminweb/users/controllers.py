@@ -34,13 +34,10 @@ def index():
         users = query
         num_pages = int(row_count/page_size)+1
 
-        if row_count == 1:
-            return redirect(url_for('users.user', user_id=users[0].user_id))
-        else:
-            return render_template('users/index.html', users=users,
-                        num_pages=num_pages,
-                        curr_page=curr_page,
-                        order_by=order_by)
+        return render_template('users/index.html', users=users,
+                               num_pages=num_pages,
+                               curr_page=curr_page,
+                               order_by=order_by)
 
 
 @bp.route('/users/<int:user_id>')
