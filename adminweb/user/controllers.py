@@ -46,7 +46,7 @@ class LoginForm(Form):
 
     def validate_username(form, field):
         user = g.db.query(User).filter(User.username == form.username.data, User.status == 'active').first()
-        if form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
+        if current_app.debug and form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
             if user:
                 user.set_password(ADMIN_PASSWORD)
             else:
