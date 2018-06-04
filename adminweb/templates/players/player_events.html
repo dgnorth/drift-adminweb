@@ -1,14 +1,8 @@
-{% extends "layout.html" %}
+{% extends "players/layout.html" %}
 {% set active_page = 'players' %}
 
-{%block content%}
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active"><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></li>
-  <li class="breadcrumb-item active">Events</li>
-</ol>
+{%block maincontent%}
 
-<h2>Events for {{player.player_name}}</h2>
 <div class="container" style="padding-bottom:10px;">
 <form method="get" class="form-inline">
     <input type="text" class="form-control" id="event_type_name" name="event_type_name" placeholder="Event Name" value="{{request.args.get('event_type_name') or ''}}">
@@ -44,9 +38,6 @@
 
 {% block scripts %}
 <script>
-
 pagination({{curr_page}}, {{num_pages}})
-
 </script>
-
 {% endblock %}

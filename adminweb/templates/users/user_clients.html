@@ -1,0 +1,32 @@
+{% extends "users/layout.html" %}
+{% set active_page = 'users' %}
+
+{%block maincontent%}
+
+<ul class="pagination justify-content-end pagination-sm"></ul>
+<table class="table table-striped table-sm">
+<thead>
+    <tr><th>client_id</th><th>Connected</th><th>Heartbeat</th><th>Heartbeats</th><th>IP Address</th><th>Status</th></tr>
+</thead>
+<tbody>
+{%for client in clients%}
+    <tr>
+        <td><a href="{{url_for('clients.client', client_id=client.client_id)}}">{{client.client_id}}</a></td>
+        <td>{{client.create_date | dt}}</td>
+        <td>{{client.heartbeat | dt}}</td>
+        <td>{{client.num_heartbeats}}</td>
+        <td>{{client.ip_address}}<div class="float-left"><img data-toggle="tooltip" title="{{client.country.country_name}}" src="{{client.country.flag}}" class="countryflag"></div></td>
+        <td>{{client.status | status}}</td>
+    </tr>
+{%endfor%}
+</tbody>
+</table>
+<ul class="pagination justify-content-end pagination-sm"></ul>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+pagination({{curr_page}}, {{num_pages}});
+</script>
+{% endblock %}

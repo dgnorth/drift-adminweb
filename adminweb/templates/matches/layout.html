@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set active_page = 'matches' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('matches.index')}}"><i class="fa fa-trophy"></i></a> Match : {{match.match_id}}, {{match.game_mode}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('matches.match', match_id=match.match_id)}}">INFO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Players"%}active{%endif%}" href="{{url_for('matches.match_players', match_id=match.match_id)}}">Players</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Teams"%}active{%endif%}" href="{{url_for('matches.match_teams', match_id=match.match_id)}}">Teams</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Events"%}active{%endif%}" href="{{url_for('matches.match_events', match_id=match.match_id)}}">Events</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Queue"%}active{%endif%}" href="{{url_for('matches.match_queueplayers', match_id=match.match_id)}}">Queue</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% set active_page = 'servers' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('servers.index')}}"><i class="fa fa-cube"></i></a> Server : {{server.server_id}}, {{server.public_ip}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('servers.server', server_id=server.server_id)}}">INFO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Matches"%}active{%endif%}" href="{{url_for('servers.server_matches', server_id=server.server_id)}}">Matches</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

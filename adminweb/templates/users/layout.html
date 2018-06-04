@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% set active_page = 'users' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('users.index')}}"><i class="fa fa-user"></i></a> User : {{user.user_id}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('users.user', user_id=user.user_id)}}">INFO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Clients"%}active{%endif%}" href="{{url_for('users.user_clients', user_id=user.user_id)}}">Clients</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Players"%}active{%endif%}" href="{{url_for('users.user_players', user_id=user.user_id)}}">Players</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Identities"%}active{%endif%}" href="{{url_for('users.user_identities', user_id=user.user_id)}}">Identities</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

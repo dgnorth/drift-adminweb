@@ -1,0 +1,20 @@
+{% extends "players/layout.html" %}
+{% set active_page = 'players' %}
+
+{%block maincontent%}
+
+<table class="table table-striped">
+<thead>
+    <tr><th>Statistic</th><th>Value</th><th>Changed</th></tr>
+</thead>
+<tbody>
+    {% for stat in stats %}
+        <tr><td>{{stat.stat_name}}</td><td>{{stat.stat_int}}</td><td>{{stat.modify_date | dt}}</td></tr>
+    {% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

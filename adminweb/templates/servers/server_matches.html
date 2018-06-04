@@ -1,20 +1,7 @@
-{% extends "layout.html" %}
-{% set active_page = 'machines' %}
+{% extends "servers/layout.html" %}
+{% set active_page = 'servers' %}
 
-{%block content%}
-
-<br>
-<div class="alert alert-warning">
-    <h2><i class="fa fa-cube"></i>&nbsp; Server: {{server.server_id}}</h2>
-</div>
-
-<div class="float-right">
-    <a href="{{url_for('servers.server', server_id=server.server_id)}}" class="btn btn-sm btn-secondary">INFO</a>
-    &nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-danger">Matches</button>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('servers.index')}}" class="btn btn-sm btn-success"><i class="fa fa-bars"></i></a>
-</div>
-
-<br><br>
+{%block maincontent%}
 
 <table class="table table-striped table-hover">
 <thead>

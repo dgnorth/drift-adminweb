@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "users/layout.html" %}
 {% set active_page = 'users' %}
 
 {% macro write_role(role) %}
@@ -9,13 +9,7 @@
     {%endif%}
 {% endmacro %}
 
-{%block content%}
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="{{url_for('users.index')}}">Users</a></li>
-  <li class="breadcrumb-item active">{{user.user_name}}</li>
-</ol>
-
-<h2>{{user.user_name}}</h2>
+{%block maincontent%}
 
 <table class="table">
 <tr>
@@ -45,7 +39,7 @@
 </tr>
 <tr>
     <td>Default Player</td>
-    <td><a href="{{url_for('players.player', player_id=user.default_player_id)}}">{{user.default_player_id}}</a></td>
+    <td><a href="{{url_for('players.player', player_id=user.default_player_id)}}">{{user.default_player_id}}</a> &nbsp; : &nbsp; <a href="{{url_for('players.player', player_id=user.default_player_id)}}">{{player.player_name}}</a></td>
 </tr>
 {%if user.client_id:%}
 <tr>

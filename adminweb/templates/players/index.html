@@ -4,7 +4,7 @@
 
 {%block content%}
 
-<h2><i class="fa fa-user"></i> Players</h2>
+<h2><i class="fa fa-users"></i> Players</h2>
 <div class="container" style="padding-bottom:10px;">
 <form method="get" class="form-inline">
     <input type="text" class="form-control" id="player_id" name="player_id" placeholder="Player ID" value="{{request.args.get('player_id') or ''}}">
@@ -32,7 +32,7 @@
 {% for player in players %}
 <tr>
     <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_id}}</a></td>
-    <td>{{player.player_name}}
+    <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></td>
     {%if player.is_online%}
         <div class="float-right" title="User is online">
             <i class="fa fa-user" style="color:green"></i>

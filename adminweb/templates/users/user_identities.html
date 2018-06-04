@@ -1,0 +1,34 @@
+{% extends "users/layout.html" %}
+{% set active_page = 'players' %}
+
+{%block maincontent%}
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Created</th>
+    <th>Last Logon</th>
+    <th>Logons</th>
+    <th>Last IP Address</th>
+</tr>
+</thead>
+<tbody>
+{% for identity in identities %}
+<tr>
+    <td>{{identity.identity_id}}</td>
+    <td>{{identity.name}}</td>
+    <td>{{identity.create_date | dt}}</td>
+    <td>{{identity.logon_date | dt}}</td>
+    <td>{{identity.num_logons}}</td>
+    <td>{{identity.last_ip_address}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

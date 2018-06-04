@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% set active_page = 'machines' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('machines.index')}}"><i class="fa fa-cog"></i></a> Machine : {{machine.machine_id}}, {{machine.public_ip}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('machines.machine', machine_id=machine.machine_id)}}">INFO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Servers"%}active{%endif%}" href="{{url_for('machines.machine_servers', machine_id=machine.machine_id)}}">Servers</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Events"%}active{%endif%}" href="{{url_for('machines.machine_events', machine_id=machine.machine_id)}}">Events</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

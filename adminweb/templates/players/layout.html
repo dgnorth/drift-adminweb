@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% set active_page = 'players' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('players.index')}}"><i class="fa fa-user"></i></a> Player : {{player.player_id}}, {{player.player_name}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('players.player', player_id=player.player_id)}}">INFO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Stats"%}active{%endif%}" href="{{url_for('players.player_stats', player_id=player.player_id)}}">Stats</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Events"%}active{%endif%}" href="{{url_for('players.player_events', player_id=player.player_id)}}">Events</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Clients"%}active{%endif%}" href="{{url_for('players.player_clients', player_id=player.player_id)}}">Clients</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Matches"%}active{%endif%}" href="{{url_for('players.player_matches', player_id=player.player_id)}}">Matches</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {%if page=="Actions"%}active{%endif%}" href="{{url_for('players.player_actions', player_id=player.player_id)}}">Actions</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

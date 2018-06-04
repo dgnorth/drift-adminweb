@@ -1,24 +1,17 @@
-
-from flask import Blueprint, request, jsonify, \
-                  flash, g, redirect, url_for, \
-                  render_template, make_response, \
-                  current_app
-
+from flask import Blueprint, request, flash, g, redirect, url_for, render_template
 from flask_login import login_required
-import logging
 
 from drift.utils import request_wants_json
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.utils.country import get_cached_country
-from driftbase.db.models import Client, User, UserRole, User, UserEvent, UserIdentity
+from driftbase.db.models import Client, User, UserRole, UserEvent, UserIdentity, CorePlayer
 from driftbase.players import log_event
 
-log = logging.getLogger(__name__)
+
 bp = Blueprint('users', __name__, url_prefix='/users', template_folder="users")
 
-MAX_MISSIONS = 3
 
 @bp.route('/')
 @login_required
@@ -55,9 +48,10 @@ def index():
 def user(user_id):
     with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         user = session.query(User).get(user_id)
+        player = session.query(CorePlayer).get(user.default_player_id)
         identities = session.query(UserIdentity).filter(UserIdentity.user_id==user_id).all()
-        return render_template('users/user.html',
-                               user=user, identities=identities)
+        return render_template('users/user.html', page='INFO',
+                               user=user, player=player, identities=identities)
 
 
 @bp.route('/users/<int:user_id>/editname', methods=['GET', 'POST'])
@@ -84,7 +78,7 @@ def edit_user_name(user_id):
 
 @bp.route('/users/<int:user_id>/clients')
 @login_required
-def clients(user_id):
+def user_clients(user_id):
     page_size = 50
     curr_page = int(request.args.get("page") or 1)
     offset = (curr_page-1) * page_size
@@ -101,4 +95,22 @@ def clients(user_id):
         for client in rows:
             client.country = get_cached_country(client.ip_address)
 
-        return render_template('users/user_clients.html', user=user, clients=query, num_pages=num_pages, curr_page=curr_page)
+        return render_template('users/user_clients.html', page='Clients', user=user, clients=query, num_pages=num_pages, curr_page=curr_page)
+
+
+@bp.route('/users/<int:user_id>/players')
+@login_required
+def user_players(user_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        user = session.query(User).get(user_id)
+        players = session.query(CorePlayer).filter(CorePlayer.user_id==user_id).order_by(CorePlayer.player_name).limit(9999)
+        return render_template('users/user_players.html', page='Players', user=user, players=players)
+
+
+@bp.route('/users/<int:user_id>/identities')
+@login_required
+def user_identities(user_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        user = session.query(User).get(user_id)
+        identities = session.query(UserIdentity).filter(UserIdentity.user_id==user_id).order_by(UserIdentity.name).limit(9999)
+        return render_template('users/user_identities.html', page='Identities', user=user, identities=identities)

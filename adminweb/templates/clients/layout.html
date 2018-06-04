@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% set active_page = 'clients' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+
+<h2 class="item_detail_header"><a href="{{url_for('clients.index')}}"><i class="fa fa-laptop"></i></a> Client : {{client.client_id}}</h2>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('clients.client', client_id=client.client_id)}}">INFO</a>
+  </li>
+</ul>
+
+<br>
+
+{%block maincontent%}
+{% endblock %}
+
+{% endblock %}

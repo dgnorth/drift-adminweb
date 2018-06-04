@@ -1,0 +1,34 @@
+{% extends "users/layout.html" %}
+{% set active_page = 'players' %}
+
+{%block maincontent%}
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Player ID</th>
+    <th>Player Name</th>
+    <th>Create Date</th>
+    <th>Num Logons</th>
+    <th>Logon Date</th>
+    <th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for player in players %}
+<tr>
+    <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_id}}</a></td>
+    <td><a href="{{url_for('players.player', player_id=player.player_id)}}">{{player.player_name}}</a></td>
+    <td>{{player.create_date | dt}}</td>
+    <td>{{player.num_logons}}</td>
+    <td>{{player.logon_date | dt}}</td>
+    <td>{{player.status}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

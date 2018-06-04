@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "players/layout.html" %}
 {% set active_page = 'players' %}
 
 {% macro write_role(role) %}
@@ -9,19 +9,8 @@
     {%endif%}
 {% endmacro %}
 
-{%block content%}
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="{{url_for('players.index')}}">Players</a></li>
-  <li class="breadcrumb-item active">{{player.player_name or player.player_id}}</li>
-</ol>
+{%block maincontent%}
 
-<h2>{{player.player_name}}</h2>
-<div class="float-right">
-<a href="{{url_for('players.player_events', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Events</a>
-<a href="{{url_for('players.clients', player_id=player.player_id)}}" class="btn btn-sm btn-outline-secondary">View Clients</a>
-
-</div>
-<br>&nbsp;
 <table class="table">
 <tr>
     <td>Player ID</td>
@@ -61,8 +50,8 @@
 </tr>
 
 <tr>
-    <td>User ID</td>
-    <td><a href="{{url_for("users.user", user_id=player.user_id)}}">{{player.user_id}}</a></td>
+    <td>User</td>
+    <td><a href="{{url_for("users.user", user_id=player.user_id)}}">{{player.user_id}}</a> &nbsp; : &nbsp; <a href="{{url_for("users.user", user_id=player.user_id)}}">{{user.user_name}}</a></td>
 </tr>
 <tr>
     <td>User Roles</td>
@@ -82,17 +71,6 @@
 </tr>
 </table>
 
-<h3>Player Stats</h3>
-<table class="table table-striped">
-<thead>
-    <tr><th>Statistic</th><th>Value</th><th>Changed</th></tr>
-</thead>
-<tbody>
-    {% for stat in stats %}
-        <tr><td>{{stat.stat_name}}</td><td>{{stat.stat_int}}</td><td>{{stat.modify_date | dt}}</td></tr>
-    {% endfor %}
-</tbody>
-</table>
 {%if info %}
     <div class="infobox alert alert-info"">
         <div><small class="text-muted">{{info.0.modify_date | dt}} by {{info.1.username}}</small></div>
@@ -104,6 +82,7 @@
     <a href="{{url_for('players.edit_player_note', player_id=player.player_id)}}" class="btn btn-sm btn-primary">Add Note</a>
 
 {%endif%}
+
 {% endblock %}
 
 {% block scripts %}

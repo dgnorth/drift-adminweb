@@ -5,7 +5,7 @@ from adminweb.utils import sqlalchemy_tenant_session
 from driftbase.db.models import Server, Match
 
 
-bp = Blueprint('servers', __name__, url_prefix='/servers', template_folder="servers")
+bp = Blueprint('servers', __name__, url_prefix='/servers', template_folder='servers')
 
 
 @bp.route('/')
@@ -33,7 +33,7 @@ def index():
 def server(server_id):
     with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         server = session.query(Server).get(server_id)
-    return render_template('servers/server.html', server=server)
+    return render_template('servers/server.html', page='INFO', server=server)
 
 
 @bp.route('/servers/<int:server_id>/matches')
@@ -42,4 +42,4 @@ def server_matches(server_id):
     with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         server = session.query(Server).get(server_id)
         matches = session.query(Match).filter(Match.server_id==server_id).order_by(Match.match_id.desc()).limit(100)
-        return render_template('servers/server_matches.html', server=server, matches=matches)
+        return render_template('servers/server_matches.html', page='Matches', server=server, matches=matches)

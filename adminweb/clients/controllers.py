@@ -1,12 +1,5 @@
-import collections
-
-from flask import Blueprint, request, jsonify, \
-                  flash, g, redirect, url_for, \
-                  render_template, make_response, \
-                  current_app
-
+from flask import Blueprint, request, render_template
 from flask_login import login_required
-import logging
 
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
@@ -16,8 +9,9 @@ from adminweb.db.models import PlayerInfo
 from adminweb.db.models import User as AdminUser
 from driftbase.db.models import Client, User, UserRole, CorePlayer
 
-log = logging.getLogger(__name__)
+
 bp = Blueprint('clients', __name__, url_prefix='/clients', template_folder="clients")
+
 
 @bp.route('/')
 @login_required
@@ -56,6 +50,7 @@ def client(client_id):
     with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
         client = session.query(Client).get(client_id)
         client.country = get_cached_country(client.ip_address) or {}
+        user = session.query(User).get(client.user_id)
         player = session.query(CorePlayer).get(client.player_id)
 
-        return render_template('clients/client.html', client=client, player=player)
+        return render_template('clients/client.html', page='INFO', client=client, user=user, player=player)

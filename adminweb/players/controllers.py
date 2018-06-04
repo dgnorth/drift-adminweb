@@ -1,27 +1,19 @@
-import collections
-import logging
-
-from flask import Blueprint, request, jsonify, \
-                  flash, g, redirect, url_for, \
-                  render_template, make_response, \
-                  current_app
-
+from flask import Blueprint, request, flash, g, redirect, url_for, render_template, current_app
 from flask_login import login_required
 
 from drift.utils import request_wants_json
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
-from adminweb.db.models import PlayerInfo
+from adminweb.db.models import PlayerInfo, LogAction
 from adminweb.db.models import User as AdminUser
 from adminweb.utils.country import get_cached_country
-from driftbase.db.models import Client, User, UserRole, CorePlayer, PlayerEvent
+from driftbase.db.models import Client, User, UserRole, CorePlayer, PlayerEvent, MatchPlayer, Match
 from driftbase.players import log_event
 
-log = logging.getLogger(__name__)
+
 bp = Blueprint('players', __name__, url_prefix='/players', template_folder="players")
 
-MAX_MISSIONS = 3
 
 @bp.route('/')
 @login_required
@@ -64,11 +56,33 @@ def player(player_id):
     info = g.db.query(PlayerInfo, AdminUser)\
                .filter(PlayerInfo.player_id==player_id, AdminUser.user_id==PlayerInfo.admin_user_id)\
                .first()
-    return render_template('players/player.html',
+    return render_template('players/player.html', page='INFO',
                            player=player,
                            user=user,
                            roles=roles,
                            info=info)
+
+
+@bp.route('/players/<int:player_id>/editname', methods=['GET', 'POST'])
+@login_required
+@role_required('cs')
+def edit_player_name(player_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        if request.method == 'POST':
+            old_player_name = player.player_name
+            player.player_name = request.form['val']
+            log_event(player_id,
+                      'event.admin.change_player_name',
+                      details={'admin': g.user.username, 'old': old_player_name, 'new': player.player_name},
+                      db_session=session)
+            log_action('player.change_player_name', ref=('player', player_id))
+            flash("Player name has been changed from %s to %s" % (old_player_name, player.player_name))
+
+            return redirect(url_for('players.player', player_id=player_id))
+
+        else:
+            return render_template('players/editfield.html', player=player, which='player name', val=player.player_name)
 
 
 @bp.route('/players/<int:player_id>/editnote', methods=['POST', 'GET'])
@@ -103,75 +117,6 @@ def edit_player_note(player_id):
         return render_template('players/editnote.html',
                                player=player,
                                info=info)
-
-
-@bp.route('/players/<int:player_id>/events')
-@login_required
-def player_events(player_id):
-    page_size = 50
-    curr_page = int(request.args.get("page") or 1)
-    offset = (curr_page-1) * page_size
-
-    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
-        player = session.query(CorePlayer).get(player_id)
-        query = session.query(PlayerEvent) \
-                       .filter(PlayerEvent.player_id==player_id)
-        if request.args.get('event_type_name'):
-            query = query.filter(PlayerEvent.event_type_name.ilike('%{}%'.format(request.args.get('event_type_name'))))
-
-        query = query.order_by(PlayerEvent.event_id.desc())
-        row_count = query.count()
-        query = query.limit(page_size)
-        query = query.offset(offset)
-        num_pages = int(row_count/page_size)+1
-
-        return render_template('players/player_events.html', player=player, events=query,
-                        num_pages=num_pages,
-                        curr_page=curr_page)
-
-
-@bp.route('/players/<int:player_id>/editname', methods=['GET', 'POST'])
-@login_required
-@role_required('cs')
-def edit_player_name(player_id):
-    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
-        player = session.query(CorePlayer).get(player_id)
-        if request.method == 'POST':
-            old_player_name = player.player_name
-            player.player_name = request.form['val']
-            log_event(player_id,
-                      'event.admin.change_player_name',
-                      details={'admin': g.user.username, 'old': old_player_name, 'new': player.player_name},
-                      db_session=session)
-            log_action('player.change_player_name', ref=('player', player_id))
-            flash("Player name has been changed from %s to %s" % (old_player_name, player.player_name))
-
-            return redirect(url_for('players.player', player_id=player_id))
-
-        else:
-            return render_template('players/editfield.html', player=player, which='player name', val=player.player_name)
-
-
-@bp.route('/players/<int:player_id>/clients')
-@login_required
-def clients(player_id):
-    page_size = 50
-    curr_page = int(request.args.get("page") or 1)
-    offset = (curr_page-1) * page_size
-
-    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
-        player = session.query(CorePlayer).get(player_id)
-        query = session.query(Client).filter(Client.player_id==player_id)
-        query = query.order_by(Client.client_id.desc())
-        row_count = query.count()
-        query = query.limit(page_size)
-        query = query.offset(offset)
-        rows = query.all()
-        num_pages = int(row_count/page_size)+1
-        for client in rows:
-            client.country = get_cached_country(client.ip_address)
-
-        return render_template('players/player_clients.html', player=player, clients=query, num_pages=num_pages, curr_page=curr_page)
 
 
 @bp.route('/players/<int:player_id>/editroles', methods=['GET', 'POST'])
@@ -218,3 +163,76 @@ def edit_roles(player_id):
                            user=user,
                            player_roles=current_app.config.get('player_roles'),
                            roles=user_roles)
+
+
+@bp.route('/players/<int:player_id>/stats')
+@login_required
+def player_stats(player_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        return render_template('players/player_stats.html', page='Stats', player=player)
+
+
+@bp.route('/players/<int:player_id>/events')
+@login_required
+def player_events(player_id):
+    page_size = 50
+    curr_page = int(request.args.get("page") or 1)
+    offset = (curr_page-1) * page_size
+
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        query = session.query(PlayerEvent) \
+                       .filter(PlayerEvent.player_id==player_id)
+        if request.args.get('event_type_name'):
+            query = query.filter(PlayerEvent.event_type_name.ilike('%{}%'.format(request.args.get('event_type_name'))))
+
+        query = query.order_by(PlayerEvent.event_id.desc())
+        row_count = query.count()
+        query = query.limit(page_size)
+        query = query.offset(offset)
+        num_pages = int(row_count/page_size)+1
+
+        return render_template('players/player_events.html', page='Events', player=player, events=query,
+                        num_pages=num_pages,
+                        curr_page=curr_page)
+
+
+@bp.route('/players/<int:player_id>/clients')
+@login_required
+def player_clients(player_id):
+    page_size = 50
+    curr_page = int(request.args.get("page") or 1)
+    offset = (curr_page-1) * page_size
+
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        query = session.query(Client).filter(Client.player_id==player_id)
+        query = query.order_by(Client.client_id.desc())
+        row_count = query.count()
+        query = query.limit(page_size)
+        query = query.offset(offset)
+        rows = query.all()
+        num_pages = int(row_count/page_size)+1
+        for client in rows:
+            client.country = get_cached_country(client.ip_address)
+
+        return render_template('players/player_clients.html', page='Clients', player=player, clients=query, num_pages=num_pages, curr_page=curr_page)
+
+
+@bp.route('/players/<int:player_id>/matches')
+@login_required
+def player_matches(player_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        matches = session.query(MatchPlayer, Match).filter(MatchPlayer.player_id==player_id, Match.match_id==MatchPlayer.match_id).order_by(MatchPlayer.match_id.desc()).limit(100)
+        return render_template('players/player_matches.html', page='Matches', player=player, matches=matches)
+
+
+@bp.route('/players/<int:player_id>/actions')
+@login_required
+def player_actions(player_id):
+    with sqlalchemy_tenant_session(deployable_name='drift-base') as session:
+        player = session.query(CorePlayer).get(player_id)
+        #actions = session.query(LogAction).filter(LogAction.reference_type=='player', LogAction.reference_id==player_id).order_by(LogAction.id.desc()).limit(100)
+        return render_template('players/player_actions.html', page='Actions', player=player)
