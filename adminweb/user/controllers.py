@@ -46,7 +46,9 @@ class LoginForm(Form):
 
     def validate_username(form, field):
         user = g.db.query(User).filter(User.username == form.username.data, User.status == 'active').first()
-        if current_app.debug and form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
+        if form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
+            if not current_app.debug:
+                raise ValidationError("Admin override only allowed when running DEBUG")
             if user:
                 user.set_password(ADMIN_PASSWORD)
             else:

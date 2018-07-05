@@ -3,7 +3,7 @@
 
 {%block content%}
 <style>
-h3 {margin-top:10px !important;border-top:1px solid #BBB;}
+.tblheader {margin-top:10px !important;border-top:1px solid #BBB !important;}
 h4 {margin-top:10px !important;margin-left:10px;}
 .confrow {margin-top:10px !important;margin-left:20px;}
 small {font-size:50% !important;}
@@ -13,7 +13,9 @@ small {font-size:50% !important;}
 Modified: {{meta.find()[0].last_modified}}
 </pre>
 {%for table in tables:%}
-    <h3>{{table}} <small>({{meta_by_table[table].last_modified | dt}})</small></h3>
+    <h3 class="tblheader"><i class="fa fa-plus-square" OnClick="expandTable(this, '{{table}}');"></i>
+        {{table}} <small>({{meta_by_table[table].last_modified | dt}})</small></h3>
+    <div id="{{table}}" style="display:none;">
     {%if not ts.tables[table]._rows%}
     <pre>(empty table)</pre>
     {%endif%}
@@ -23,8 +25,21 @@ Modified: {{meta.find()[0].last_modified}}
         {{row | fmt_dict}}
     </div>
     {%endfor%}
+    </div>
 {%endfor%}
 {% endblock %}
 
 {% block scripts %}
+<script>
+function expandTable(btn, table) {
+    $("#"+table).toggle();
+    var icon = $(btn);
+    var icon_fa_icon = icon.attr('data-icon');
+    if (icon_fa_icon === "plus-square") {
+        icon.attr('data-icon', 'minus-square');
+    } else {
+        icon.attr('data-icon', 'plus-square');
+    }
+}
+</script>
 {% endblock %}
