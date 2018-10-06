@@ -76,7 +76,7 @@ class MetricsAgent(object):
         sql = """SELECT date_time, value FROM counters_view
                   WHERE counter_id = {counter_id} AND date_time::date >= current_date - interval '{num_days} days'
                   ORDER BY date_time ASC""".format(counter_id=counter_id, num_days=num_days)
-        print sql
+        print(sql)
         rows = self.session.execute(sql)
 
         for r in rows:

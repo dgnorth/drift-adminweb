@@ -24,7 +24,7 @@ if __name__ == "__main__":
         try:
             adminweb.__version__.verify(setup_args['version'])
         except Exception as e:
-            print "Warning!"
-            print e
+            print("Warning!")
+            print(e)
 
     setup(**setup_args)

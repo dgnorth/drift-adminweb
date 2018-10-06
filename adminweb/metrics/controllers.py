@@ -37,7 +37,7 @@ def index():
                     num_days = 60
             series = metrics.get_counter_data(counter_id, num_days)
 
-        counters = [v for k, v in metrics.counters.items() if isinstance(k, int)]
+        counters = [v for k, v in list(metrics.counters.items()) if isinstance(k, int)]
         return render_template('metrics/index.html',
                                counters=counters,
                                series=[series])

@@ -13,7 +13,7 @@ blueprint = flask.Blueprint('filters', __name__)
 
 def sanitize(d):
     if isinstance(d, dict):
-        for k, v in d.iteritems():
+        for k, v in list(d.items()):
             if 'private' in k or 'password' in k:
                 d[k] = "***"
             elif isinstance(v, dict):
@@ -22,7 +22,7 @@ def sanitize(d):
                 for vv in v:
                     sanitize(vv)
             else:
-                print "{0} : {1}".format(k, v)
+                print(("{0} : {1}".format(k, v)))
     return d
 
 @blueprint.app_template_filter()
@@ -37,7 +37,7 @@ def fmt_dict(value):
         return ""
     ret = "<table style=\"width:100%%\">"
     value = sanitize(value)
-    for k, v in value.iteritems():
+    for k, v in list(value.items()):
         if isinstance(v, dict) or isinstance(v, list):
             v = "<pre>%s</pre>" % json.dumps(v, indent=4)
         ret += "<tr><th class=key>%s</th><td>%s</td></tr>" % (k, v)
@@ -64,7 +64,7 @@ def fmt_dict_inline(value):
 
 def _fmt_dict(value):
     lst = []
-    for k, v in value.iteritems():
+    for k, v in list(value.items()):
         if isinstance(v, dict) or isinstance(v, list):
             v = "<pre>%s</pre>" % json.dumps(v, indent=4)
         lst.append('<span class="inldctkey">%s:</span> <span class="inldctval">%s</span>' % (k, v))
@@ -73,7 +73,7 @@ def _fmt_dict(value):
 
 @blueprint.app_template_filter()
 def dt(value, format='%Y-%m-%d %H:%M'):
-    if isinstance(value, types.StringTypes):
+    if isinstance(value, str):
         value = parser.parse(value)
     if not value:
         return "-"
@@ -156,7 +156,7 @@ def fmt_datetime(dt):
             dt = datetime.datetime.strptime(dt, '%Y-%m-%d %H:%M:%S.%f')
         return dt.strftime('%Y/%m/%d %H:%M:%S')
     except Exception as e:
-        print "Exception in fmt_datetime for '%s': %s" % (dt, e)
+        print(("Exception in fmt_datetime for '%s': %s" % (dt, e)))
         return dt
 
 
@@ -174,7 +174,7 @@ def fmt_heartbeat(dt):
         ret = '<div class="%s">%s <i class="fa %s"></i></div>' % (cls, dt.strftime('%Y/%m/%d %H:%M:%S'), icon)
         return ret
     except Exception as e:
-        print "Exception in fmt_datetime for '%s': %s" % (dt, e)
+        print(("Exception in fmt_datetime for '%s': %s" % (dt, e)))
         return dt
 
 @blueprint.app_template_filter()

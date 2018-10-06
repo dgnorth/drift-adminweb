@@ -51,7 +51,7 @@ class User(ModelBase):
         return self.user_id
 
     def get_id(self):
-        return unicode(self.user_id)
+        return str(self.user_id)
 
     def __repr__(self):
         return '<User %r (%s)>' % (self.username, self.user_id)

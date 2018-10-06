@@ -21,7 +21,7 @@ ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'test')
 
 
 def create_password():
-    password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in list(range(8)))
     return password
 
 
