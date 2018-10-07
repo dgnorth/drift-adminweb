@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% set active_page = 'driftconfig' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.index')}}">Drift Config</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organizations')}}">Organizations</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organization', organization_name=product.organization_name)}}">{{product.organization_name}}</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organization', organization_name=product.organization_name)}}">Products</a></li>
+  <li class="breadcrumb-item active">{{product.product_name}}</li>
+</ol>
+
+{{product}}
+<table class="table">
+<tr>
+    <td><strong>Product Name</strong></td>
+    <td>{{product.product_name}}</td>
+</tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

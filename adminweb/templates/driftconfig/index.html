@@ -2,44 +2,20 @@
 {% set active_page = 'metrics' %}
 
 {%block content%}
-<style>
-.tblheader {margin-top:10px !important;border-top:1px solid #BBB !important;}
-h4 {margin-top:10px !important;margin-left:10px;}
-.confrow {margin-top:10px !important;margin-left:20px;}
-small {font-size:50% !important;}
-</style>
-<h2><i class="fa fa-cog"></i> Drift Config Viewer</h2>
-<pre class="alert alert-success">Source: {{ts}}
-Modified: {{meta.find()[0].last_modified}}
-</pre>
-{%for table in tables:%}
-    <h3 class="tblheader"><i class="fa fa-plus-square" OnClick="expandTable(this, '{{table}}');"></i>
-        {{table}} <small>({{meta_by_table[table].last_modified | dt}})</small></h3>
-    <div id="{{table}}" style="display:none;">
-    {%if not ts.tables[table]._rows%}
-    <pre>(empty table)</pre>
-    {%endif%}
-    {%for key, row in ts.tables[table]._rows.items()%}
-        <h4>{{key}}</h4>
-        <div class="confrow">
-        {{row | fmt_dict}}
-    </div>
-    {%endfor%}
-    </div>
-{%endfor%}
+<h2>Drift Config</h2>
+
+<ul>
+    <li>
+        <a href="{{url_for('driftconfig.tablestore')}}">View Tablestore</a>
+    </li>
+    <li>
+        <a href="{{url_for('driftconfig.organizations')}}">View Organizations</a>
+    </li>
+    <li>
+        <a href="{{url_for('driftconfig.products')}}">View Products</a>
+    </li>
+</ul>
 {% endblock %}
 
 {% block scripts %}
-<script>
-function expandTable(btn, table) {
-    $("#"+table).toggle();
-    var icon = $(btn);
-    var icon_fa_icon = icon.attr('data-icon');
-    if (icon_fa_icon === "plus-square") {
-        icon.attr('data-icon', 'minus-square');
-    } else {
-        icon.attr('data-icon', 'plus-square');
-    }
-}
-</script>
 {% endblock %}

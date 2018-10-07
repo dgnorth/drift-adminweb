@@ -4,7 +4,7 @@
 
 {%block content%}
 
-<h2 class="item_detail_header"><a href="{{url_for('players.index')}}"><i class="fa fa-user"></i></a> Player : {{player.player_id}}, {{player.player_name}}</h2>
+<h2><a href="{{url_for('players.index')}}"><i class="fa fa-user"></i></a> Player : {{player.player_id}}, {{player.player_name}}</h2>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('players.player', player_id=player.player_id)}}">INFO</a>

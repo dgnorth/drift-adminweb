@@ -4,7 +4,7 @@
 
 {%block content%}
 
-<h2 class="item_detail_header"><a href="{{url_for('matches.index')}}"><i class="fa fa-trophy"></i></a> Match : {{match.match_id}}, {{match.game_mode}}</h2>
+<h2><a href="{{url_for('matches.index')}}"><i class="fa fa-trophy"></i></a> Match : {{match.match_id}}, {{match.game_mode}}</h2>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link {%if page=="INFO"%}active{%endif%}" href="{{url_for('matches.match', match_id=match.match_id)}}">INFO</a>
