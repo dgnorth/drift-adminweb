@@ -1,7 +1,7 @@
 """
 Utility methods for determining country and region information for ip address
 """
-from flask import g
+from flask import g, current_app
 import requests
 import logging
 
@@ -14,6 +14,9 @@ cached_ip_addresses = {}
 
 
 def get_cached_country(ip_address):
+    if current_app.config.get('DISABLE_COUNTRY'):
+        return {}
+
     cache_key = 'ip_address_to_country1'
     global cached_ip_addresses
     if not cached_ip_addresses:

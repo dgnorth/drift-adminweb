@@ -3,9 +3,7 @@ from flask import Blueprint, request, \
                   render_template
 
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
-from flask_wtf import Form
 from wtforms import PasswordField
-import wtforms.validators
 from wtforms import fields
 from wtforms.validators import Email, InputRequired, ValidationError
 

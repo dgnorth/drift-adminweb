@@ -2,15 +2,11 @@ from flask import Blueprint, request, jsonify, \
                   flash, g, redirect, url_for, \
                   render_template, make_response, current_app
 
-import collections, json, copy
-
 from drift.utils import request_wants_json
 
 from flask_login import login_required
 
-from flask_wtf import Form
 from wtforms import PasswordField
-import wtforms.validators
 from wtforms.validators import DataRequired
 from adminweb.db.models import User
 from adminweb.utils import sqlalchemy_tenant_session
@@ -19,7 +15,6 @@ from drift.orm import sqlalchemy_session
 import logging
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-import datetime, time
 from driftconfig.util import get_default_drift_config
 from drift.utils import get_tier_name
 from adminweb.utils.metrics import metrics_agent
