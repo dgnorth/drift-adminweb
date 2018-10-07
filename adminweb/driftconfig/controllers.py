@@ -38,6 +38,14 @@ def organization(organization_name):
                            ts=ts)
 
 
+@bp.route('/tenants')
+@login_required
+def tenants():
+    return render_template('driftconfig/tenants.html',
+                           tenants=ts.tables.get('tenant-names')._rows.values(),
+                           ts=ts)
+
+
 @bp.route('/products')
 @login_required
 def products():
