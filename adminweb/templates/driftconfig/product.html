@@ -10,15 +10,108 @@
   <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organization', organization_name=product.organization_name)}}">Products</a></li>
   <li class="breadcrumb-item active">{{product.product_name}}</li>
 </ol>
-
-{{product}}
+<h2>{{product.product_name}}</h2>
 <table class="table">
 <tr>
-    <td><strong>Product Name</strong></td>
-    <td>{{product.product_name}}</td>
+    <td><strong>Product Name</strong></td><td>{{product.product_name}}</td>
+</tr>
+<tr>
+    <td><strong>Organization Name</strong></td><td>{{product.organization_name}}</td>
+</tr>
+<tr>
+    <td><strong>State</strong></td><td>{{product.state}}</td>
 </tr>
 </table>
 
+<h3>Deployables</h3>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Deployable Name</th>
+    <th>Active</th>
+    <th>Tier</th>
+</tr>
+</thead>
+<tbody>
+{% for deployable in deployables %}
+<tr>
+    <td>{{deployable.deployable_name}}</td>
+    <td>{{deployable.is_active}}</td>
+    <td>{{deployable.tier_name}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>Tenants</h3>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Tenant Name</th>
+    <th>Tier Name</th>
+    <th>Reserved At</th>
+    <th>Reserved By</th>
+</tr>
+</thead>
+<tbody>
+{% for k in tenant_names %}
+<tr>
+    <td><a href="{{url_for('driftconfig.tenant', tenant_name=k.tenant_name)}}">{{k.tenant_name}}</a></td>
+    <td>{{k.tier_name}}</td>
+    <td>{{k.reserved_at}}</td>
+    <td>{{k.reserved_by}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>API Keys</h3>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>Key Name</th>
+    <th>Key Type</th>
+    <th>Created</th>
+    <th>In Use</th>
+</tr>
+</thead>
+<tbody>
+{% for k in api_keys %}
+<tr>
+    <td>{{k.api_key_name}}</td>
+    <td>{{k.key_type}}</td>
+    <td>{{k.create_date}}</td>
+    <td>{{k.in_use}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>API Key Rules</h3>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+    <th>#</th>
+    <th>Rule Name</th>
+    <th>Rule Type</th>
+    <th>Active</th>
+    <th>Versions</th>
+</tr>
+</thead>
+<tbody>
+{% for rule in api_key_rules %}
+<tr>
+    <td>{{rule.assignment_order}}</td>
+    <td>{{rule.rule_name}}</td>
+    <td>{{rule.rule_type}}</td>
+    <td>{{rule.is_active}}</td>
+    <td>{{", ".join(rule.version_patterns)}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 {% endblock %}
 
 {% block scripts %}

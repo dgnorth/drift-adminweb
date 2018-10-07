@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% set active_page = 'driftconfig' %}
+{% import "macros.html" as macros %}
+
+{%block content%}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.index')}}">Drift Config</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organizations')}}">Organizations</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organization', organization_name=tenant_name.organization_name)}}">{{tenant_name.organization_name}}</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.organization', organization_name=tenant_name.organization_name)}}">Products</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.product', organization_name=tenant_name.organization_name, product_name=tenant_name.product_name)}}">{{tenant_name.product_name}}</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('driftconfig.product', organization_name=tenant_name.organization_name, product_name=tenant_name.product_name)}}">Tenants</a></li>
+  <li class="breadcrumb-item active">{{tenant_name.tenant_name}}</li>
+</ol>
+
+<h2>{{tenant_name.tenant_name}}</h2>
+<table class="table">
+<tr>
+    <td><strong>Tenant Name</strong></td><td>{{tenant_name.tenant_name}}</td>
+</tr>
+<tr>
+    <td><strong>Organization Name</strong></td><td>{{tenant_name.organization_name}}</td>
+</tr>
+<tr>
+    <td><strong>Product Name</strong></td><td>{{tenant_name.product_name}}</td>
+</tr>
+<tr>
+    <td><strong>Reserved By</strong></td><td>{{tenant_name.reserved_by}}</td>
+</tr>
+<tr>
+    <td><strong>Reserved At</strong></td><td>{{tenant_name.reserved_at}}</td>
+</tr>
+<tr>
+    <td><strong>Tier Name</strong></td><td>{{tenant_name.tier_name}}</td>
+</tr>
+</table>
+
+<h3>Deployables</h3>
+{%for row in tenant_deployables%}
+<h4>{{row.deployable_name}}</h4>
+<table class="table">
+<tr>
+    <td><strong>Root Endpoint</strong></td><td>{{row.root_endpoint}}</td>
+</tr>
+<tr>
+    <td><strong>State</strong></td><td>{{row.state}}</td>
+</tr>
+<tr>
+    <td><strong>Postgres</strong></td><td>{{row.postgres | fmt_dict}}</td>
+</tr>
+<tr>
+    <td><strong>Redis</strong></td><td>{{row.redis | fmt_dict}}</td>
+</tr>
+</table>
+
+{%endfor%}
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

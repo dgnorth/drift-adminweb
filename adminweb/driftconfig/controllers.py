@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify, \
 from driftconfig.util import get_default_drift_config_and_source
 from flask_login import login_required
 import logging
+import operator
 log = logging.getLogger(__name__)
 bp = Blueprint('driftconfig', __name__, url_prefix='/driftconfig', template_folder="driftconfig")
 
@@ -50,9 +51,39 @@ def products():
 def product(organization_name, product_name):
     tbl = ts.get_table('products')
     product_row = tbl.find({"product_name": product_name, "organization_name": organization_name})[0]
+    deployables = []
+    for deployable_name in product_row['deployables']:
+        tbl = ts.get_table('deployables')
+        row = tbl.find({"deployable_name": deployable_name})[0]
+        deployables.append(row)
+    tbl = ts.get_table('tenant-names')
+    tenant_names = tbl.find({"product_name": product_name})
 
+    tbl = ts.get_table('api-keys')
+    api_keys = tbl.find({"product_name": product_name})
+
+    tbl = ts.get_table('api-key-rules')
+    api_key_rules = tbl.find({"product_name": product_name})
+    api_key_rules.sort(key=operator.itemgetter('assignment_order'))
     return render_template('driftconfig/product.html',
                            product=product_row,
+                           deployables=deployables,
+                           tenant_names=tenant_names,
+                           api_keys=api_keys,
+                           api_key_rules=api_key_rules,
+                           ts=ts)
+
+
+@bp.route('/tenants/<tenant_name>')
+@login_required
+def tenant(tenant_name):
+    tbl = ts.get_table('tenant-names')
+    tenant_name_row = tbl.find({"tenant_name": tenant_name})[0]
+    tbl = ts.get_table('tenants')
+    tenant_deployables = tbl.find({"tenant_name": tenant_name})
+    return render_template('driftconfig/tenant.html',
+                           tenant_name=tenant_name_row,
+                           tenant_deployables=tenant_deployables,
                            ts=ts)
 
 
