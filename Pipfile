@@ -19,7 +19,6 @@ flask-cors = "*"
 psycopg2 = "*"
 flask_gravatar = "*"
 boto = "*"
-"2d33325" = {path = "./../drift-config", editable = true}
 
 [dev-packages]
 pytest = "*"
@@ -28,4 +27,4 @@ mock = "*"
 fabric = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
