@@ -4,7 +4,7 @@ from flask import g, current_app
 from flask_restful import abort
 from functools import wraps
 
-from driftconfig.util import get_drift_config
+from driftconfig.util import get_drift_config, TenantNotConfigured
 from driftconfig.relib import create_backend, get_store_from_url
 from drift.core.resources.driftconfig import check_tenant_state
 from drift.core.resources.postgres import format_connection_string, get_sqlalchemy_session
@@ -52,8 +52,15 @@ def get_sqlalchemy_tenant_session(
     tier_name = tier_name or get_tier_name()
     deployable_name = deployable_name or current_app.config['name']
 
-    config = get_drift_config(
-        tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
+    try:
+        config = get_drift_config(
+            tenant_name=tenant_name, tier_name=tier_name, deployable_name=deployable_name)
+    except TenantNotConfigured as e:
+        # A special case when running this app with 'dconf developer' command.
+        if current_app.debug and tier_name == 'LOCALTIER':
+            abort(400, message="{}. PLEASE NOTE! Use 'dconf developer' with the --shared switch!".format(e))
+        else:
+            raise
 
     check_tenant_state(config.tenant)
 
