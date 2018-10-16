@@ -1,7 +1,7 @@
 {
   "name": "drift-adminweb",
-  "PORT": 10080,
-  "disable_jwt": true,
+  "PORT": 10088,
+  "DISABLE_JWT": true,
   "show_exceptions": true,
   "apps": [
     "adminweb.home",
