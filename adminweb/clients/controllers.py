@@ -7,7 +7,7 @@ from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.utils.country import get_cached_country
 from adminweb.db.models import PlayerInfo
 from adminweb.db.models import User as AdminUser
-from driftbase.db.models import Client, User, UserRole, CorePlayer
+from driftbase.models.db import Client, User, UserRole, CorePlayer
 
 
 bp = Blueprint('clients', __name__, url_prefix='/clients', template_folder="clients")

@@ -6,7 +6,7 @@ from functools import wraps
 
 from driftconfig.util import get_drift_config, TenantNotConfigured
 from driftconfig.relib import create_backend, get_store_from_url
-from drift.core.resources.driftconfig import check_tenant_state
+from drift.core.extensions.driftconfig import check_tenant_state
 from drift.core.resources.postgres import format_connection_string, get_sqlalchemy_session
 from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name

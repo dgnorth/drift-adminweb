@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required
 
 from adminweb.utils import sqlalchemy_tenant_session
-from driftbase.db.models import Match, MatchPlayer, MatchTeam, CorePlayer, MatchEvent, MatchQueuePlayer
+from driftbase.models.db import Match, MatchPlayer, MatchTeam, CorePlayer, MatchEvent, MatchQueuePlayer
 
 
 bp = Blueprint('matches', __name__, url_prefix='/matches', template_folder='matches')

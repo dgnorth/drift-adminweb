@@ -6,7 +6,7 @@ from drift.core.extensions.tenancy import tenant_from_hostname
 from drift.utils import get_tier_name
 from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.utils.country import get_cached_country
-from driftbase.db.models import Client, User, UserRole, UserEvent, UserIdentity, CorePlayer
+from driftbase.models.db import Client, User, UserRole, UserEvent, UserIdentity, CorePlayer
 from driftbase.players import log_event
 
 
@@ -63,7 +63,7 @@ def edit_user_name(user_id):
         if request.method == 'POST':
             old_user_name = user.user_name
             user.user_name = request.form['val']
-            log_event(user_id, 
+            log_event(user_id,
                       'event.admin.change_user_name',
                       details={'admin': g.user.username, 'old': old_user_name, 'new': user.user_name},
                       db_session=session)

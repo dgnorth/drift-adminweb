@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required
 
 from adminweb.utils import sqlalchemy_tenant_session
-from driftbase.db.models import Machine, MachineEvent, Server
+from driftbase.models.db import Machine, MachineEvent, Server
 
 
 bp = Blueprint('machines', __name__, url_prefix='/machines', template_folder='machines')

@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required
 
 from adminweb.utils import sqlalchemy_tenant_session
-from driftbase.db.models import Server, Match
+from driftbase.models.db import Server, Match
 
 
 bp = Blueprint('servers', __name__, url_prefix='/servers', template_folder='servers')

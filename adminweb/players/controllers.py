@@ -8,7 +8,7 @@ from adminweb.utils import sqlalchemy_tenant_session, role_required, log_action
 from adminweb.db.models import PlayerInfo, LogAction
 from adminweb.db.models import User as AdminUser
 from adminweb.utils.country import get_cached_country
-from driftbase.db.models import Client, User, UserRole, CorePlayer, PlayerEvent, MatchPlayer, Match
+from driftbase.models.db import Client, User, UserRole, CorePlayer, PlayerEvent, MatchPlayer, Match
 from driftbase.players import log_event
 
 
