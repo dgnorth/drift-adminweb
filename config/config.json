@@ -4,7 +4,6 @@
   "DISABLE_JWT": true,
   "show_exceptions": true,
   "apps": [
-    "adminweb.home",
     "adminweb.outside",
     "adminweb.user",
     "adminweb.dashboard",

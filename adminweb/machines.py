@@ -8,6 +8,10 @@ from driftbase.models.db import Machine, MachineEvent, Server
 bp = Blueprint('machines', __name__, url_prefix='/machines', template_folder='machines')
 
 
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 @bp.route('/')
 @login_required
 def index():

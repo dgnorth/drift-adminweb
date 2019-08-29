@@ -8,6 +8,11 @@ import operator
 log = logging.getLogger(__name__)
 bp = Blueprint('driftconfig', __name__, url_prefix='/driftconfig', template_folder="driftconfig")
 
+
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 ts, source = get_default_drift_config_and_source()
 
 

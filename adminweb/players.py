@@ -15,6 +15,10 @@ from driftbase.players import log_event
 bp = Blueprint('players', __name__, url_prefix='/players', template_folder="players")
 
 
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 @bp.route('/')
 @login_required
 def index():

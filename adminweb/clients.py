@@ -13,6 +13,10 @@ from driftbase.models.db import Client, User, UserRole, CorePlayer
 bp = Blueprint('clients', __name__, url_prefix='/clients', template_folder="clients")
 
 
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 @bp.route('/')
 @login_required
 def index():

@@ -15,6 +15,10 @@ log = logging.getLogger(__name__)
 bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder="admin")
 
 
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 @bp.route('/')
 @login_required
 def index():

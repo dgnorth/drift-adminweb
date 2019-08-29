@@ -8,6 +8,10 @@ from driftbase.models.db import Server, Match
 bp = Blueprint('servers', __name__, url_prefix='/servers', template_folder='servers')
 
 
+def drift_init_extension(app, api, **kwargs):
+    app.register_blueprint(bp)
+
+
 @bp.route('/')
 @login_required
 def index():
